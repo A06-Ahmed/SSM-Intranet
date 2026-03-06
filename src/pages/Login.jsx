@@ -129,6 +129,9 @@ function Login() {
           <img src="src/assets/ray-donnelly-YybYC5zC1Mk-unsplash 1.jpg" alt="" />
         </div>
       </div>
+      <div className='footer-login'>
+        <p>&copy; {new Date().getFullYear()} Smm Socodam Davum. All Rights Reserved.</p>
+      </div>
     </div>
   )
 }
