@@ -6,11 +6,22 @@
 }
 
 html,
-body {
+body,
+#root {
     margin: 0;
     padding: 0;
     height: 100%;
     font-family: 'MyFont', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.app-shell {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.app-main {
+    flex: 1;
 }
 
 .login-page {
