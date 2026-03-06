@@ -13,8 +13,6 @@ body {
     font-family: 'MyFont', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
-/* LOGIN PAGE LAYOUT */
-
 .login-page {
     margin: 0;
     min-height: 100vh;
@@ -274,8 +272,6 @@ body {
     object-position: center;
 }
 
-/* FOOTER AT BOTTOM, CENTERED */
-
 .footer-login {
     width: 100%;
     text-align: center;
@@ -329,7 +325,6 @@ body {
     background-color: white;
     width: 60%;
     height: 85%;
-    /* Légèrement augmenté pour laisser de la place au message */
     min-height: 500px;
     border-radius: 25px;
     overflow: hidden;
@@ -344,9 +339,7 @@ body {
     flex-direction: column;
     align-items: center;
     overflow-y: auto;
-    /* Permet de scroller si le contenu déborde (ex: message d'erreur) */
     padding: 20px 0;
-    /* Ajoute un peu de marge en haut/bas pour le scroll */
 }
 
 
@@ -644,7 +637,6 @@ body {
     background-color: white;
     width: 60%;
     height: 85%;
-    /* Légèrement augmenté pour laisser de la place au message */
     min-height: 500px;
     border-radius: 25px;
     overflow: hidden;
@@ -659,9 +651,7 @@ body {
     flex-direction: column;
     align-items: center;
     overflow-y: auto;
-    /* Permet de scroller si le contenu déborde (ex: message d'erreur) */
     padding: 20px 0;
-    /* Ajoute un peu de marge en haut/bas pour le scroll */
 }
 
 
@@ -904,7 +894,7 @@ body {
 }
 
 
-.footer-login{
+.footer-login {
     align-self: baseline;
     align-self: flex-end;
     margin-top: 20px;

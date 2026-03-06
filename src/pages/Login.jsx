@@ -50,12 +50,11 @@ function Login() {
 
   const handleStandardLogin = (e) => {
     e.preventDefault()
-    setErrorMsg('') // reset error
+    setErrorMsg('')
 
     const user = mockUsers.find(u => u.email === email && u.password === password)
 
     if (user) {
-      // Login successful: Save entered info for visualization in UserJson.jsx
       localStorage.setItem('user', JSON.stringify({
         email: user.email,
         password: user.password,
