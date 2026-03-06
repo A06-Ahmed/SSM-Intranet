@@ -124,7 +124,7 @@ function Header() {
               className="notifications-close"
               onClick={() => setShowNotifications(false)}
             >
-              ×
+              
             </button>
           </div>
           <ul className="notifications-list">

@@ -575,6 +575,50 @@ body {
     letter-spacing: 1px;
 }
 
+.site-footer {
+    background-color: #ffffff;
+    border-top: 1px solid #E5E7EB;
+    padding: 32px 80px 16px 80px;
+    color: #111827;
+}
+
+.footer-main {
+    display: flex;
+    justify-content: space-between;
+    max-width: 960px;
+    margin: 0 auto 16px auto;
+}
+
+.footer-column {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+}
+
+.footer-column-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 4px;
+}
+
+.footer-link {
+    font-size: 13px;
+    color: #9CA3AF;
+    text-decoration: none;
+}
+
+.footer-link:hover {
+    color: #6B7280;
+}
+
+.footer-bottom {
+    text-align: center;
+    font-size: 11px;
+    color: #D1D5DB;
+}
+
 @font-face {
     font-family: 'MyFont';
     src: url('../assets/fonts/poppins-v24-latin-regular.woff2') format('woff2');
