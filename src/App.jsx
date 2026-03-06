@@ -4,6 +4,10 @@ import Home from './pages/Home.jsx'
 import News from './pages/News.jsx'
 import Gallery from './pages/Gallery.jsx'
 import UserJson from './pages/UserJson.jsx'
+import AjirhDemo from './pages/AjirhDemo.jsx'
+import KelioDemo from './pages/KelioDemo.jsx'
+import ReportingDemo from './pages/ReportingDemo.jsx'
+import SuiviArmatureDemo from './pages/SuiviArmatureDemo.jsx'
 import MainLayout from './layouts/MainLayout.jsx'
 
 function ProtectedRoute({ children }) {
@@ -23,6 +27,38 @@ function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/user-json" element={<UserJson />} />
 
+      <Route
+          path="/demo/ajirh"
+          element={
+            <ProtectedRoute>
+              <AjirhDemo />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/demo/kelio"
+          element={
+            <ProtectedRoute>
+              <KelioDemo />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/demo/reporting"
+          element={
+            <ProtectedRoute>
+              <ReportingDemo />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/demo/suivi-armature"
+          element={
+            <ProtectedRoute>
+              <SuiviArmatureDemo />
+            </ProtectedRoute>
+          }
+        />
       <Route element={<MainLayout />}>
         <Route
           path="/home"
@@ -32,6 +68,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+        
         <Route
           path="/news"
           element={

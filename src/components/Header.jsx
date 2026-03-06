@@ -1,15 +1,17 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 function Header() {
+  const navigate = useNavigate()
   const [searchValue, setSearchValue] = useState('')
   const [showNotifications, setShowNotifications] = useState(false)
   const [isNavOpen, setIsNavOpen] = useState(true)
 
   const apps = [
-    { id: 'ajirh', label: 'Ajirh' },
-    { id: 'kelio', label: 'Kelio' },
-    { id: 'reporting', label: 'Reporting' },
-    { id: 'suivi', label: 'Suivi Armature' },
+    { id: 'ajirh', label: 'Ajirh', path: '/demo/ajirh' },
+    { id: 'kelio', label: 'Kelio', path: '/demo/kelio' },
+    { id: 'reporting', label: 'Reporting', path: '/demo/reporting' },
+    { id: 'suivi', label: 'Suivi Armature', path: '/demo/suivi-armature' },
   ]
 
   const notificationCount = 3
@@ -106,7 +108,7 @@ function Header() {
             key={app.id}
             type="button"
             className="app-pill"
-            onClick={() => {}}
+            onClick={() => navigate(app.path)}
           >
             {app.label}
           </button>
@@ -122,7 +124,7 @@ function Header() {
               className="notifications-close"
               onClick={() => setShowNotifications(false)}
             >
-              
+              ×
             </button>
           </div>
           <ul className="notifications-list">
