@@ -1,0 +1,5 @@
+# After making changes to your code
+git status                # See what you changed
+git add .                 # Add all changes
+git commit -m "Added new features to dashboard"  # Commit with message
+git push                  # Send to GitHub

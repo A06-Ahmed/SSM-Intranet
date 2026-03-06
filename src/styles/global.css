@@ -59,6 +59,563 @@ body {
     font-weight: lighter;
     margin-top: 10px;
     margin-bottom: 0;
+    color: #111111;
+}
+
+.login-caption {
+    font-size: 10px;
+    font-weight: lighter;
+    margin-top: 0;
+    margin-bottom: 24px;
+    color: #6b7280;
+    text-align: center;
+}
+
+.my-google-btn {
+    width: 70%;
+    height: 50px;
+    background-color: #ffffff;
+    border-radius: 100px;
+    font-size: 15px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    color: #000000;
+    border: 1px solid #000000;
+    cursor: pointer;
+    transition: transform 0.25s ease, color 0.25s ease;
+}
+
+.my-google-btn::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 0%;
+    background: #00205C;
+    z-index: 0;
+    transition: height 0.25s ease;
+}
+
+.my-google-btn * {
+    position: relative;
+    z-index: 1;
+}
+
+.glogo {
+    margin-right: 20px;
+}
+
+.my-google-btn:hover {
+    transform: scale(1.03);
+    color: #ffffff;
+}
+
+.my-google-btn:hover::before {
+    height: 100%;
+}
+
+.or {
+    width: 70%;
+    margin: 8px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    color: #9e9e9e;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.or::before,
+.or::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background-color: #d0d0d0;
+}
+
+.or::before {
+    margin-right: 12px;
+}
+
+.or::after {
+    margin-left: 12px;
+}
+
+.login-actual-form {
+    width: 100%;
+}
+
+.login-input-group {
+    margin-bottom: 16px;
+    width: 100%;
+}
+
+.login-label {
+    font-size: 12px;
+    color: #6b7280;
+    margin-bottom: 6px;
+    font-weight: 400;
+}
+
+.login-label.no-margin-bottom {
+    margin-bottom: 0;
+}
+
+.password-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    width: 100%;
+}
+
+.toggle-password {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    color: #9ca3af;
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.toggle-icon {
+    width: 14px;
+    height: 14px;
+    opacity: 0.6;
+}
+
+.login-input {
+    width: 100%;
+    height: 44px;
+    border: 1px solid #d1d5db;
+    border-radius: 12px;
+    padding: 0 16px;
+    font-size: 14px;
+    box-sizing: border-box;
+    outline: none;
+    transition: border-color 0.2s;
+    font-family: inherit;
+    color: #333333;
+}
+
+.login-input:focus {
+    border-color: #9ca3af;
+}
+
+.forgot-password {
+    display: block;
+    text-align: right;
+    margin-top: 6px;
+    font-size: 12px;
+    color: #4b5563;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.login-manparent-form {
+    width: 70%;
+    margin-bottom: 20px;
+}
+
+.login-man-form {
+    width: 100%;
+}
+
+.login-submit-btn {
+    width: 100%;
+    height: 48px;
+    background-color: #00205C;
+    color: #ffffff;
+    border-radius: 100px;
+    font-size: 15px;
+    font-weight: 500;
+    border: 1px solid #00205C;
+    cursor: pointer;
+    margin-bottom: 20px;
+    transition: all 0.25s ease;
+}
+
+.login-submit-btn:hover {
+    background-color: #ffffff;
+    color: #00205C;
+}
+
+.login-error-msg {
+    color: #ef4444;
+    font-size: 14px;
+    text-align: center;
+    margin-bottom: 16px;
+    padding: 10px;
+    background-color: #fef2f2;
+    border: 1px solid #fee2e2;
+    border-radius: 8px;
+}
+
+.login-image {
+    overflow: hidden;
+    flex: 1;
+    height: 100%;
+    position: relative;
+}
+
+.login-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.footer-login {
+    width: 100%;
+    text-align: center;
+    margin-top: auto;
+    margin-bottom: 12px;
+    color: #547ABC;
+    font-size: 10px;
+}
+
+.footer-login p {
+    margin: 0;
+}
+
+.top-header {
+    position: relative;
+    width: 100%;
+    background-color: #00205C;
+    color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+    z-index: 20;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+
+.header-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 24px;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+}
+
+.header-logo img {
+    height: 40px;
+    width: auto;
+}
+
+.header-center {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    padding: 0 24px;
+}
+
+.search-box {
+    width: 100%;
+    max-width: 720px;
+}
+
+.search-content {
+    display: flex;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.15);
+    border-radius: 8px;
+    padding: 4px 16px;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+.search-icon {
+    width: 16px;
+    height: 16px;
+    margin-right: 10px;
+    opacity: 1;
+    filter: brightness(0) invert(1);
+}
+
+.search-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #ffffff;
+    font-size: 13px;
+}
+
+.search-input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.header-icon-wrapper {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.header-icon {
+    width: 18px;
+    height: 18px;
+}
+
+.notification-badge {
+    position: absolute;
+    top: -4px;
+    margin: -8px;
+    right: -6px;
+    min-width: 10px;
+    height: 16px;
+    padding: 0 4px;
+    border-radius: 1000px;
+    background-color: #FF3366;
+    color: #ffffff;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.header-profile {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    border: none;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.profile-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.profile-name {
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.profile-role {
+    font-size: 11px;
+    opacity: 0.8;
+}
+
+.profile-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 999px;
+    background-color: rgba(255, 255, 255, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.hamburger-button {
+    width: 32px;
+    height: 32px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    background: transparent;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 3px;
+    cursor: pointer;
+}
+
+.hamburger-line {
+    width: 14px;
+    height: 2px;
+    background-color: #ffffff;
+    border-radius: 999px;
+}
+
+.apps-bar {
+    display: flex;
+    gap: 20px;
+    padding: 10px 32px 14px 32px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 10px rgba(15, 23, 42, 0.12);
+    justify-content: flex-start;
+}
+
+.apps-bar-visible {
+    display: flex;
+    justify-content: center;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+
+.apps-bar-hidden {
+    display: none;
+}
+
+.app-pill {
+    border: none;
+    outline: none;
+    padding: 6px 22px;
+    border-radius: 999px;
+    background-color: #ffffff;
+    color: #00205B;
+    font-size: 13px;
+    font-weight: bolder;
+    box-shadow: 0 4px 10px rgba(15, 23, 42, 0.15);
+    cursor: pointer;
+}
+
+.app-pill:hover {
+    background-color: #F3F4FF;
+}
+
+.notifications-panel {
+    position: absolute;
+    right: 24px;
+    top: 60px;
+    width: 320px;
+    max-height: 340px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 10px 35px rgba(15, 23, 42, 0.35);
+    padding: 12px 0;
+    color: #111827;
+    overflow: hidden;
+}
+
+.notifications-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px 8px 16px;
+    border-bottom: 1px solid #E5E7EB;
+}
+
+.notifications-title {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.notifications-close {
+    background: transparent;
+    border: none;
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.notifications-list {
+    list-style: none;
+    margin: 0;
+    padding: 8px 0;
+    max-height: 280px;
+    overflow-y: auto;
+}
+
+.notification-item {
+    padding: 8px 16px;
+}
+
+.notification-item + .notification-item {
+    border-top: 1px solid #F3F4F6;
+}
+
+.notification-title {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 2px;
+}
+
+.notification-description {
+    font-size: 12px;
+    color: #4B5563;
+    margin-bottom: 2px;
+}
+
+.notification-time {
+    font-size: 11px;
+    color: #9CA3AF;
+}
+
+@font-face {
+    font-family: 'MyFont';
+    src: url('../assets/fonts/poppins-v24-latin-regular.woff2') format('woff2');
+    font-style: normal;
+    font-display: swap;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: 'MyFont', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.login-page {
+    margin: 0;
+    min-height: 100vh;
+    width: 100%;
+    background-image: url('../assets/Vector.svg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-container {
+    background-color: #ffffff;
+    width: 60%;
+    height: 85%;
+    min-height: 500px;
+    border-radius: 25px;
+    overflow: hidden;
+    display: flex;
+}
+
+.login-form {
+    width: 50%;
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: auto;
+    padding: 20px 0;
+}
+
+.Login-logo {
+    margin-top: 40px;
+    width: 60px;
+    height: auto;
+    display: block;
+}
+
+.login-headline {
+    font-size: 30px;
+    font-weight: lighter;
+    margin-top: 10px;
+    margin-bottom: 0;
     color: #111;
 }
 
@@ -906,4 +1463,26 @@ body {
 
 .footer-login p {
     margin: 0;
+}
+
+
+
+
+.header{
+    width: 100%;
+    height: 60px;
+    background-color: #00205C;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0 20px;
+
+}
+
+
+
+.header-nav-logo{
+
+    margin-top: 10px;
+    color: white;
 }
