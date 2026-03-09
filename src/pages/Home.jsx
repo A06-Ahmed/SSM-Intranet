@@ -337,7 +337,7 @@ function Home() {
         <div className="calendar-card">
           <div className="calendar-header">
             <div className="calendar-header-left">
-              <span className="calendar-icon">📅</span>
+              <span className="calendar-icon"><img src="src/assets/calender.svg" alt="" /></span>
               <span className="calendar-title">Jours Fériés à Venir</span>
             </div>
           </div>

@@ -1856,6 +1856,10 @@ body {
     justify-content: center;
     font-size: 18px;
 }
+.calendar-icon img{
+    width: 16px;
+    height: 16px;
+}
 
 .calendar-title {
     font-size: 15px;
