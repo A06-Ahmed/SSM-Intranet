@@ -146,6 +146,7 @@ function Home() {
         const upcoming = all
           .map((h) => {
             const dateObj = h.date ? new Date(h.date) : null
+
             const displayDate = dateObj
               ? dateObj.toLocaleDateString('fr-FR', {
                   day: 'numeric',
@@ -155,7 +156,7 @@ function Home() {
               : h.date
 
             return {
-              name: h.name,
+              name: translateHolidayToFrench(h.name),
               dateObj,
               displayDate,
             }
@@ -193,6 +194,31 @@ function Home() {
 
     return () => controller.abort()
   }, [])
+
+  function translateHolidayToFrench(name) {
+    const map = {
+      "New Year's Day": "Jour de l’An",
+      "Proclamation of Independence": "Manifeste de l’Indépendance",
+      "Amazigh New Year": "Nouvel An Amazigh (Yennayer)",
+      "Labour Day": "Fête du Travail",
+      "Enthronement": "Fête du Trône",
+      "Zikra Oued Ed-Dahab": "Anniversaire de la Récupération d’Oued Eddahab",
+      "Revolution of the King and the People": "Révolution du Roi et du Peuple",
+      "Youth Day": "Fête de la Jeunesse",
+      "Green March": "Marche Verte",
+      "Independence Day": "Fête de l’Indépendance",
+  
+      // sometimes API returns these variants
+      "Eid Ash-Shughl": "Fête du Travail",
+      "Eid Al-Ârch": "Fête du Trône",
+      "Thawrat al malik wa shâab": "Révolution du Roi et du Peuple",
+      "Eid Al Chabab": "Fête de la Jeunesse",
+      "Eid Al Massira Al Khadra": "Marche Verte",
+      "Eid Al Istiqulal": "Fête de l’Indépendance",
+    }
+  
+    return map[name] || name
+  }
 
   return (
     <div className="home">

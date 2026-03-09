@@ -1609,7 +1609,7 @@ body {
 
 .home-wlcm{
     width: 90%;
-    height: 60vh;
+    height: 50vh;
     margin-block: 20px;
     background-image: url('src/assets/scott-blake-x-ghf9LjrVg-unsplash 1.jpg');
     background-size: cover;
@@ -1810,17 +1810,19 @@ body {
 }
 
 .home-bottom-section {
-    width: 100%;
+    width: 90%;
     display: flex;
     justify-content: center;
+    align-items: flex-start;
     gap: 20px;
-    padding: 0 40px 40px 40px;
+    padding: 0 0 40px 0;
+    margin: 0 auto;
     box-sizing: border-box;
 }
 
 .calendar-card {
-    flex: 1.1;
-    max-width: 520px;
+    flex: 1;
+    max-width: none;
     background-color: #ffffff;
     border-radius: 18px;
     border: 1px solid #E5E7EB;
@@ -1905,13 +1907,14 @@ body {
 
 .home-gallery-card {
     flex: 1;
-    max-width: 520px;
+    max-width: none;
     border-radius: 18px;
     border: none;
     padding: 0;
     background-image: url('src/assets/image 8.jpg');
     background-size: cover;
     background-position: center;
+    height: 50vh;
     position: relative;
     cursor: pointer;
     overflow: hidden;
