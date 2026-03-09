@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { useNavigate, Navigate } from 'react-router-dom'
 
 export const mockUsers = [
@@ -53,6 +54,9 @@ export const mockUsers = [
 
 function UserJson() {
   const navigate = useNavigate()
+  const [holidays, setHolidays] = useState([])
+  const [isHolidaysLoading, setIsHolidaysLoading] = useState(true)
+  const [holidaysError, setHolidaysError] = useState('')
   const stored = localStorage.getItem('user')
   const parsed = stored ? JSON.parse(stored) : null
 
@@ -60,6 +64,50 @@ function UserJson() {
     localStorage.removeItem('user')
     navigate('/login')
   }
+
+  useEffect(() => {
+    const controller = new AbortController()
+
+    async function fetchHolidays() {
+      try {
+        setIsHolidaysLoading(true)
+        setHolidaysError('')
+
+        const res = await fetch(
+          'https://date.nager.at/api/v3/PublicHolidays/2026/MA',
+          { signal: controller.signal }
+        )
+
+        if (!res.ok) {
+          throw new Error('Erreur lors du chargement des jours fériés')
+        }
+
+        const data = await res.json()
+        const arr = Array.isArray(data) ? data : []
+
+        const mapped = arr.map((h) => ({
+          localName: h && h.localName ? h.localName : '',
+          name: h && h.name ? h.name : '',
+          date: h && h.date ? h.date : '',
+          countryCode: h && h.countryCode ? h.countryCode : '',
+          types: Array.isArray(h && h.types) ? h.types.join(', ') : '',
+        }))
+
+        setHolidays(mapped)
+      } catch (err) {
+        if (err.name === 'AbortError') return
+        console.error('Erreur API jours fériés', err)
+        setHolidaysError("Impossible de charger les jours fériés depuis l'API.")
+        setHolidays([])
+      } finally {
+        setIsHolidaysLoading(false)
+      }
+    }
+
+    fetchHolidays()
+
+    return () => controller.abort()
+  }, [])
 
   if (!parsed) {
     return <Navigate to="/login" state={{ error: "Vous devez être connecté pour accéder à cette page." }} replace />
@@ -110,6 +158,40 @@ function UserJson() {
           ))}
         </tbody>
       </table>
+
+      <hr style={{ margin: '2rem 0' }} />
+
+      <h3>Jours fériés (API Nager – Maroc 2026)</h3>
+      {isHolidaysLoading && (
+        <p>Chargement des jours fériés depuis l'API...</p>
+      )}
+      {!isHolidaysLoading && holidaysError && (
+        <p style={{ color: 'red' }}>{holidaysError}</p>
+      )}
+      {!isHolidaysLoading && !holidaysError && holidays.length > 0 && (
+        <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '1rem' }}>
+          <thead>
+            <tr style={{ textAlign: 'left', borderBottom: '1px solid #ccc' }}>
+              <th>Nom local</th>
+              <th>Nom (EN)</th>
+              <th>Date</th>
+              <th>Code pays</th>
+              <th>Type(s)</th>
+            </tr>
+          </thead>
+          <tbody>
+            {holidays.map((h, idx) => (
+              <tr key={`${h.name}-${h.date}-${idx}`} style={{ borderBottom: '1px solid #eee' }}>
+                <td style={{ padding: '8px 0', verticalAlign: 'top' }}>{h.localName}</td>
+                <td style={{ padding: '8px 0', verticalAlign: 'top' }}>{h.name}</td>
+                <td style={{ padding: '8px 0', verticalAlign: 'top' }}>{h.date}</td>
+                <td style={{ padding: '8px 0', verticalAlign: 'top' }}>{h.countryCode}</td>
+                <td style={{ padding: '8px 0', verticalAlign: 'top' }}>{h.types}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
     </div>
   )
 }
