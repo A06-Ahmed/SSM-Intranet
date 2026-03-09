@@ -6,12 +6,28 @@ function Header() {
   const [searchValue, setSearchValue] = useState('')
   const [showNotifications, setShowNotifications] = useState(false)
   const [isNavOpen, setIsNavOpen] = useState(true)
+  const [showProfileMenu, setShowProfileMenu] = useState(false)
+
+  const storedUser = localStorage.getItem('user')
+  const currentUser = storedUser ? JSON.parse(storedUser) : null
+  const isAdmin = !!currentUser?.isAdmin
+
+  const displayName = currentUser?.name || 'Utilisateur invité'
+  const displayPosition = currentUser?.position || (isAdmin ? 'Administrateur' : 'Collaborateur')
+  const initials = displayName
+    .split(' ')
+    .filter(Boolean)
+    .map((part) => part[0])
+    .join('')
+    .slice(0, 2)
+    .toUpperCase()
 
   const apps = [
     { id: 'ajirh', label: 'Ajirh', path: '/demo/ajirh' },
     { id: 'kelio', label: 'Kelio', path: '/demo/kelio' },
     { id: 'reporting', label: 'Reporting', path: '/demo/reporting' },
     { id: 'suivi', label: 'Suivi Armature', path: '/demo/suivi-armature' },
+    ...(isAdmin ? [{ id: 'admin-demo', label: 'Admin Demo', path: '/demo/admin' }] : []),
   ]
 
   const notificationCount = 3
@@ -67,7 +83,10 @@ function Header() {
         <div className="header-right">
           <div
             className="header-icon-wrapper notification-wrapper"
-            onClick={() => setShowNotifications((prev) => !prev)}
+            onClick={() => {
+              setShowNotifications((prev) => !prev)
+              setShowProfileMenu(false)
+            }}
           >
             <img src="src/assets/notification.svg" alt="Notifications" className="header-icon" />
             {notificationCount > 0 && (
@@ -78,16 +97,34 @@ function Header() {
           <button
             type="button"
             className="header-profile"
-            onClick={() => {}}
+            onClick={() => {
+              setShowProfileMenu((prev) => !prev)
+              setShowNotifications(false)
+            }}
           >
             <div className="profile-info">
-              <span className="profile-name">Atoubi Ahmed</span>
-              <span className="profile-role">Stagiaire</span>
+              <span className="profile-name">{displayName}</span>
+              <span className="profile-role">{displayPosition}</span>
             </div>
             <div className="profile-avatar">
-              <span className="profile-avatar-initials">AA</span>
+              <span className="profile-avatar-initials">{initials}</span>
             </div>
           </button>
+
+          {showProfileMenu && (
+            <div className="profile-menu">
+              <button
+                type="button"
+                className="profile-menu-item"
+                onClick={() => {
+                  localStorage.removeItem('user')
+                  navigate('/login')
+                }}
+              >
+                Se déconnecter
+              </button>
+            </div>
+          )}
 
           <button
             type="button"

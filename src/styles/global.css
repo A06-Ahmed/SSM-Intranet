@@ -262,7 +262,9 @@ body,
     color: #ef4444;
     font-size: 14px;
     text-align: center;
-    margin-bottom: 16px;
+    width: 70%;
+    max-width: 400px;
+    margin: 12px auto 16px auto;
     padding: 10px;
     background-color: #fef2f2;
     border: 1px solid #fee2e2;
@@ -370,6 +372,7 @@ body,
     display: flex;
     align-items: center;
     gap: 16px;
+    position: relative;
 }
 
 .header-icon-wrapper {
@@ -568,6 +571,40 @@ body,
 .notification-time {
     font-size: 11px;
     color: #9CA3AF;
+}
+
+.profile-menu {
+    position: absolute;
+    top: 52px;
+
+    min-width: 180px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 10px 35px rgba(15, 23, 42, 0.35);
+    padding: 8px 0;
+    color: #111827;
+    z-index: 30;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.profile-menu-item {
+    width: 100%;
+    padding: 8px 16px;
+    background: transparent;
+    text-transform: uppercase;
+    border: none;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 1000;
+    color: #FF3366;
+    cursor: pointer;
+
+}
+
+.profile-menu-item:hover {
+    background-color: #F3F4F6;
 }
 
 .app-demo-page {

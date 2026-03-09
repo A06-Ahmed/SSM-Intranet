@@ -59,7 +59,9 @@ function Login() {
         email: user.email,
         password: user.password,
         name: user.name,
-        token: user.token
+        position: user.position,
+        token: user.token,
+        isAdmin: !!user.isAdmin,
       }))
       navigate('/home')
     } else {
@@ -74,23 +76,27 @@ function Login() {
           <img src={Logo} alt="SMM Socodam davum" className='Login-logo' />
           <h2 className='login-headline'>Log in</h2>
           <h6 className='login-caption'>Connectez-vous via e-mail ou un autre service pour continuer </h6>
-          <button
-            type="button"
-            className="my-google-btn"
-            onClick={() => login()}
-          >
-            <img src={gLogo} alt="Google logo" className='glogo' />
-            <p className='auth text'>Continue with Google</p>
-          </button>
+          {errorMsg && <div className="login-error-msg">{errorMsg}</div>}
+          {!errorMsg && (
+            <>
+              <button
+                type="button"
+                className="my-google-btn"
+                onClick={() => login()}
+              >
+                <img src={gLogo} alt="Google logo" className='glogo' />
+                <p className='auth text'>Continue with Google</p>
+              </button>
 
-          <div className='or'>
-            <div className='orfill'></div>
-            <p>OU</p>
-            <div className='orfill2'></div>
-          </div>
+              <div className='or'>
+                <div className='orfill'></div>
+                <p>OU</p>
+                <div className='orfill2'></div>
+              </div>
+            </>
+          )}
           <div className='login-manparent-form'>
             <div className='login-man-form'>
-              {errorMsg && <div className="login-error-msg">{errorMsg}</div>}
               <form onSubmit={handleStandardLogin} className="login-actual-form">
                 <div className="login-input-group">
                   <div className="login-label">Votre Email</div>

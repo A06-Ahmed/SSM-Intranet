@@ -8,6 +8,7 @@ import AjirhDemo from './pages/AjirhDemo.jsx'
 import KelioDemo from './pages/KelioDemo.jsx'
 import ReportingDemo from './pages/ReportingDemo.jsx'
 import SuiviArmatureDemo from './pages/SuiviArmatureDemo.jsx'
+import AdminDemo from './pages/AdminDemo.jsx'
 import MainLayout from './layouts/MainLayout.jsx'
 
 function ProtectedRoute({ children }) {
@@ -56,6 +57,14 @@ function App() {
           element={
             <ProtectedRoute>
               <SuiviArmatureDemo />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/demo/admin"
+          element={
+            <ProtectedRoute>
+              <AdminDemo />
             </ProtectedRoute>
           }
         />

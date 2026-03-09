@@ -2,17 +2,53 @@ import { useNavigate, Navigate } from 'react-router-dom'
 
 export const mockUsers = [
   {
-    email: 'admin@smm.com',
-    password: 'password123',
-    name: 'Admin User',
-    token: 'admin-token-987'
+    email: 'direction@smm.ma',
+    password: 'direction123',
+    name: 'Youssef El Amrani',
+    position: 'Directeur Général',
+    token: 'admin-token-987',
+    isAdmin: true,
   },
   {
-    email: 'user@smm.com',
-    password: 'password123',
-    name: 'Normal User',
-    token: 'user-token-456'
-  }
+    email: 'rh@smm.ma',
+    password: 'rh123',
+    name: 'Salma Benali',
+    position: 'Responsable Ressources Humaines',
+    token: 'rh-token-456',
+    isAdmin: true,
+  },
+  {
+    email: 'compta@smm.ma',
+    password: 'compta123',
+    name: 'Omar Alaoui',
+    position: 'Responsable Comptabilité',
+    token: 'compta-token-789',
+    isAdmin: false,
+  },
+  {
+    email: 'chef.projet@smm.ma',
+    password: 'projet123',
+    name: 'Hicham Berrada',
+    position: 'Chef de Projet',
+    token: 'projet-token-321',
+    isAdmin: false,
+  },
+  {
+    email: 'employe@smm.ma',
+    password: 'employe123',
+    name: 'Khadija Zahraoui',
+    position: 'Employée Administrative',
+    token: 'employe-token-654',
+    isAdmin: false,
+  },
+  {
+    email: 'stagiaire@smm.ma',
+    password: 'stagiaire123',
+    name: 'Ayoub Tazi',
+    position: 'Stagiaire Communication',
+    token: 'stagiaire-token-987',
+    isAdmin: false,
+  },
 ]
 
 function UserJson() {
@@ -56,8 +92,10 @@ function UserJson() {
         <thead>
           <tr style={{ textAlign: 'left', borderBottom: '1px solid #ccc' }}>
             <th>Email</th>
-            <th>Password</th>
-            <th>Name</th>
+            <th>Mot de passe</th>
+            <th>Nom</th>
+            <th>Poste</th>
+            <th>Accès admin</th>
           </tr>
         </thead>
         <tbody>
@@ -66,6 +104,8 @@ function UserJson() {
               <td style={{ padding: '8px 0' }}>{u.email}</td>
               <td style={{ padding: '8px 0' }}>{u.password}</td>
               <td style={{ padding: '8px 0' }}>{u.name}</td>
+              <td style={{ padding: '8px 0' }}>{u.position}</td>
+              <td style={{ padding: '8px 0' }}>{u.isAdmin ? 'Oui' : 'Non'}</td>
             </tr>
           ))}
         </tbody>
