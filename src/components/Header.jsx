@@ -58,7 +58,7 @@ function Header() {
       <div className="header-bar">
         <div className="header-left">
           <div className="header-logo">
-            <img src="src/assets/logo intranet white.svg" alt="SMM Socodam Davum Intranet" />
+            <a href='src\pages\Home'><img src="src/assets/logo intranet white.svg" alt="SMM Socodam Davum Intranet" /></a>
           </div>
         </div>
 

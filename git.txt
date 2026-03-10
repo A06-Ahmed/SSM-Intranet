@@ -1,4 +1,5 @@
 # After making changes to your code
+git add .   
 git status                # See what you changed
 git add .                 # Add all changes
 git commit -m "Added new features to dashboard"  # Commit with message

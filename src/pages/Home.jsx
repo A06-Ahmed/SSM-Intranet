@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import AnnuaireSearch from '../components/AnnuaireSearch'
 
 function Home() {
   const navigate = useNavigate()
@@ -265,7 +266,9 @@ function Home() {
           </ul>
         </div>
       </section>
-
+      <section className="home-annuaire-section">
+        <AnnuaireSearch />
+      </section>
       <section className="featured-section">
         <h2 className="featured-title-main">À la une</h2>
         <div className="featured-grid-wrapper">
@@ -332,6 +335,8 @@ function Home() {
           )}
         </div>
       </section>
+
+
 
       <section className="home-bottom-section">
         <div className="calendar-card">

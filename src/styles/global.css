@@ -1847,6 +1847,7 @@ body {
 }
 
 .calendar-icon {
+    padding: 10px;
     width: 32px;
     height: 32px;
     border-radius: 12px;
@@ -2094,4 +2095,378 @@ body {
         grid-template-columns: 1fr;
     }
 }
+
+/* --- Annuaire (AnnuaireSearch) --- */
+.home-annuaire-section {
+    width: 100%;
+    margin: 0 0 40px 0;
+}
+
+.annuaire-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.annuaire-hero {
+    width: 100%;
+    max-width: 1040px;
+    min-height: 220px;
+    border-radius: 18px;
+    overflow: hidden;
+    background-image: linear-gradient(to bottom right, rgba(0, 32, 92, 0.96), rgba(15, 23, 42, 0.9)), url('../assets/bernd-dittrich-pYlBAu3de0w-unsplash.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 40px;
+    box-shadow: 0 18px 40px rgba(15, 23, 42, 0.55);
+    box-sizing: border-box;
+}
+
+.annuaire-hero-inner {
+    width: 100%;
+    max-width: 820px;
+    color: #ffffff;
+    text-align: center;
+}
+
+.annuaire-hero-title {
+    font-size: 32px;
+    font-weight: 700;
+    margin: 0 0 8px 0;
+}
+
+.annuaire-hero-subtitle {
+    font-size: 14px;
+    font-weight: 400;
+    opacity: 0.9;
+    margin: 0 0 18px 0;
+}
+
+.annuaire-search-bar {
+    margin: 0 auto;
+    width: 100%;
+    max-width: 780px;
+    height: 52px;
+    background-color: #ffffff;
+    border-radius: 999px;
+    display: flex;
+    align-items: center;
+    padding: 0 6px 0 18px;
+    box-shadow: 0 14px 30px rgba(15, 23, 42, 0.35);
+    box-sizing: border-box;
+}
+
+.annuaire-search-input {
+    
+    flex: 2;
+    border: none;
+    outline: none;
+    font-size: 14px;
+    color: #111827;
+    background: transparent;
+}
+
+.annuaire-search-input::placeholder {
+
+    color: #9ca3af;
+}
+
+.annuaire-search-divider {
+    width: 1px;
+    height: 26px;
+    background-color: #e5e7eb;
+    margin: 0 10px;
+}
+
+.annuaire-search-select {
+    flex: 0 0 230px;
+    border: none;
+    outline: none;
+    font-size: 14px;
+    color: #374151;
+    background: transparent;
+    padding: 0 8px;
+    margin-left: 18px;
+    appearance: none;
+    max-width: 230px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.annuaire-search-button {
+    flex: 0 0 auto;
+    padding: 8px 22px;
+    border-radius: 999px;
+    border: none;
+    background-color: #0f3c88;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: 0 6px 16px rgba(15, 23, 42, 0.55);
+    transition: background-color 0.15s ease, transform 0.08s ease, box-shadow 0.15s ease;
+}
+
+.annuaire-search-button:hover:not(:disabled) {
+    background-color: #0b2f6b;
+    transform: translateY(-1px);
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.6);
+}
+
+.annuaire-search-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.annuaire-status {
+    margin-top: 10px;
+    font-size: 13px;
+    color: #e5e7eb;
+}
+
+.annuaire-error {
+    margin-top: 10px;
+    font-size: 13px;
+    color: #fecaca;
+}
+
+.annuaire-results-shell {
+    width: 100%;
+    max-width: 900px;
+    background-color: #ffffff;
+    border-radius: 18px;
+    box-shadow: 0 14px 35px rgba(15, 23, 42, 0.20);
+    padding: 18px 22px 20px;
+    box-sizing: border-box;
+}
+
+.annuaire-results-header-top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px 16px;
+    margin-bottom: 12px;
+    border-bottom: 1px solid #e5e7eb;
+    padding-bottom: 10px;
+}
+
+.annuaire-results-line {
+    font-size: 14px;
+}
+
+.annuaire-results-label {
+    font-weight: 600;
+    color: #111827;
+    margin-right: 4px;
+}
+
+.annuaire-results-value {
+    color: #111827;
+}
+
+.annuaire-results-subcategory .annuaire-field {
+    margin: 0;
+}
+
+.annuaire-results-subcategory .annuaire-label {
+    font-size: 11px;
+}
+
+.annuaire-results-count {
+    font-size: 12px;
+    color: #6b7280;
+}
+
+.annuaire-field {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.annuaire-label {
+    font-size: 12px;
+    color: #6b7280;
+}
+
+.annuaire-select {
+    padding: 6px 8px;
+    border-radius: 8px;
+    border: 1px solid #d1d5db;
+    font-size: 13px;
+    background-color: #ffffff;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+}
+
+.annuaire-select:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.35);
+    background-color: #ffffff;
+}
+
+.annuaire-results-section {
+    margin-top: 6px;
+}
+
+.annuaire-results-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #0f3c88;
+    margin-bottom: 8px;
+}
+
+.annuaire-results-list {
+    max-height: 360px;
+    overflow-y: auto;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    background-color: #ffffff;
+}
+
+.annuaire-person-card {
+    padding: 10px 12px;
+    border-bottom: 1px solid #e5e7eb;
+    cursor: pointer;
+    background: #ffffff;
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1.2fr) minmax(0, 1.6fr);
+    align-items: center;
+    column-gap: 12px;
+    transition: background-color 0.1s ease, transform 0.05s ease, box-shadow 0.1s ease;
+    font-size: 13px;
+}
+
+.annuaire-person-card:last-child {
+    border-bottom: none;
+}
+
+.annuaire-person-card:hover {
+    background-color: #eff6ff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(15, 23, 42, 0.08);
+}
+
+.annuaire-person-name {
+    font-weight: 500;
+    color: #111827;
+}
+
+.annuaire-person-dept {
+    font-size: 12px;
+    color: #6b7280;
+}
+
+.annuaire-person-email {
+    font-size: 12px;
+    color: #2563eb;
+    word-break: break-all;
+}
+
+.annuaire-no-results {
+    padding: 16px;
+    text-align: center;
+    color: #6b7280;
+    font-size: 13px;
+}
+
+.annuaire-detail-card {
+    width: 100%;
+    max-width: 900px;
+    background-color: #ffffff;
+    border-radius: 18px;
+    box-shadow: 0 14px 35px rgba(15, 23, 42, 0.20);
+    padding: 20px 24px 22px;
+    box-sizing: border-box;
+}
+
+.annuaire-detail-header {
+    margin-bottom: 12px;
+}
+
+.annuaire-detail-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #0f3c88;
+    margin: 0;
+}
+
+.annuaire-detail-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px 22px;
+}
+
+.annuaire-detail-col {
+    min-width: 0;
+}
+
+.annuaire-detail-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #9ca3af;
+    margin-bottom: 3px;
+}
+
+.annuaire-detail-value {
+    font-size: 14px;
+    color: #111827;
+    border-bottom: 1px solid #e5e7eb;
+    padding-bottom: 4px;
+}
+
+.annuaire-detail-strong {
+    font-weight: 600;
+}
+
+@media (max-width: 768px) {
+    .annuaire-hero {
+        padding: 24px 18px;
+        border-radius: 0;
+    }
+
+    .annuaire-hero-title {
+        font-size: 24px;
+    }
+
+    .annuaire-search-bar {
+        max-width: 100%;
+        height: auto;
+        flex-wrap: wrap;
+        padding: 8px 10px;
+        gap: 8px;
+        border-radius: 14px;
+    }
+
+    .annuaire-search-input {
+        flex: 1 1 100%;
+        margin-bottom: 4px;
+    }
+
+    .annuaire-search-divider {
+        display: none;
+    }
+
+    .annuaire-search-select {
+        flex: 1 1 auto;
+    }
+
+    .annuaire-detail-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .annuaire-person-card {
+        grid-template-columns: 1fr;
+        row-gap: 4px;
+    }
+}
+
 
