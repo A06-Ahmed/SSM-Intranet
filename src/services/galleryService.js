@@ -109,6 +109,9 @@ export async function getGalleryDemo() {
     })
 }
 
+
+//... .-.. . . .--. .-.. . ... ... / .-. .- -- -- .- -.. .- -.
+
 // Backend-ready API placeholders (to be wired to an admin page later)
 export async function createGallery(_payload) {
   void _payload

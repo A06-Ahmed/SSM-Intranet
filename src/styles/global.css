@@ -3160,3 +3160,31 @@ body {
     }
 }
 
+.loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh; /* full screen */
+    background-color: #f8f8f8; /* optional background */
+  }
+  
+  .spinner {
+    border: 6px solid #f3f3f3; /* light grey */
+    border-top: 6px solid #007BFF; /* blue */
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+    margin-bottom: 10px;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  p {
+    font-size: 16px;
+    color: #333;
+  }
