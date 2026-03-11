@@ -1,0 +1,51 @@
+[
+  {
+    "email": "direction@smm.ma",
+    "password": "direction123",
+    "name": "Youssef El Amrani",
+    "position": "Directeur Général",
+    "token": "admin-token-987",
+    "isAdmin": true
+  },
+  {
+    "email": "rh@smm.ma",
+    "password": "rh123",
+    "name": "Salma Benali",
+    "position": "Responsable Ressources Humaines",
+    "token": "rh-token-456",
+    "isAdmin": true
+  },
+  {
+    "email": "compta@smm.ma",
+    "password": "compta123",
+    "name": "Omar Alaoui",
+    "position": "Responsable Comptabilité",
+    "token": "compta-token-789",
+    "isAdmin": false
+  },
+  {
+    "email": "chef.projet@smm.ma",
+    "password": "projet123",
+    "name": "Hicham Berrada",
+    "position": "Chef de Projet",
+    "token": "projet-token-321",
+    "isAdmin": false
+  },
+  {
+    "email": "employe@smm.ma",
+    "password": "employe123",
+    "name": "Khadija Zahraoui",
+    "position": "Employée Administrative",
+    "token": "employe-token-654",
+    "isAdmin": false
+  },
+  {
+    "email": "stagiaire@smm.ma",
+    "password": "stagiaire123",
+    "name": "Ayoub Tazi",
+    "position": "Stagiaire Communication",
+    "token": "stagiaire-token-987",
+    "isAdmin": false
+  }
+]
+

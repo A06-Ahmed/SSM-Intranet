@@ -1,67 +1,17 @@
 import { useEffect, useState } from 'react'
-import { useNavigate, Navigate } from 'react-router-dom'
-
-export const mockUsers = [
-  {
-    email: 'direction@smm.ma',
-    password: 'direction123',
-    name: 'Youssef El Amrani',
-    position: 'Directeur Général',
-    token: 'admin-token-987',
-    isAdmin: true,
-  },
-  {
-    email: 'rh@smm.ma',
-    password: 'rh123',
-    name: 'Salma Benali',
-    position: 'Responsable Ressources Humaines',
-    token: 'rh-token-456',
-    isAdmin: true,
-  },
-  {
-    email: 'compta@smm.ma',
-    password: 'compta123',
-    name: 'Omar Alaoui',
-    position: 'Responsable Comptabilité',
-    token: 'compta-token-789',
-    isAdmin: false,
-  },
-  {
-    email: 'chef.projet@smm.ma',
-    password: 'projet123',
-    name: 'Hicham Berrada',
-    position: 'Chef de Projet',
-    token: 'projet-token-321',
-    isAdmin: false,
-  },
-  {
-    email: 'employe@smm.ma',
-    password: 'employe123',
-    name: 'Khadija Zahraoui',
-    position: 'Employée Administrative',
-    token: 'employe-token-654',
-    isAdmin: false,
-  },
-  {
-    email: 'stagiaire@smm.ma',
-    password: 'stagiaire123',
-    name: 'Ayoub Tazi',
-    position: 'Stagiaire Communication',
-    token: 'stagiaire-token-987',
-    isAdmin: false,
-  },
-]
+import { useNavigate } from 'react-router-dom'
+import users from '../data/users.json'
+import { useAuth } from '../hooks/useAuth'
 
 function UserJson() {
   const navigate = useNavigate()
+  const { user, token, isAuthenticated, logout } = useAuth()
   const [holidays, setHolidays] = useState([])
   const [isHolidaysLoading, setIsHolidaysLoading] = useState(true)
   const [holidaysError, setHolidaysError] = useState('')
-  const stored = localStorage.getItem('user')
-  const parsed = stored ? JSON.parse(stored) : null
 
   const handleLogout = () => {
-    localStorage.removeItem('user')
+    logout()
     navigate('/login')
   }
 
@@ -109,27 +59,23 @@ function UserJson() {
     return () => controller.abort()
   }, [])
 
-  if (!parsed) {
-    return <Navigate to="/login" state={{ error: "Vous devez être connecté pour accéder à cette page." }} replace />
-  }
-
   return (
     <div style={{ padding: '2rem' }}>
-      <h2>User JSON (from localStorage)</h2>
+      <h2>User JSON (from AuthContext)</h2>
       <p>
-        <strong>Name:</strong> {parsed.name || 'N/A'}
+        <strong>Name:</strong> {user?.name || 'N/A'}
       </p>
       <p>
-        <strong>Email:</strong> {parsed.email || 'N/A'}
+        <strong>Email:</strong> {user?.email || 'N/A'}
       </p>
       <p>
-        <strong>Google ID:</strong> {parsed.sub || 'N/A'}
+        <strong>Google ID:</strong> {user?.sub || 'N/A'}
       </p>
       <p>
-        <strong>Password:</strong> {parsed.password || 'N/A'}
+        <strong>Password:</strong> N/A
       </p>
       <p>
-        <strong>Token:</strong> {parsed.token || 'N/A'}
+        <strong>Token:</strong> {token || 'N/A'}
       </p>
       <button onClick={handleLogout} style={{ marginBottom: '2rem' }}>Temporary Logout</button>
 
@@ -147,7 +93,7 @@ function UserJson() {
           </tr>
         </thead>
         <tbody>
-          {mockUsers.map((u, idx) => (
+          {users.map((u, idx) => (
             <tr key={idx} style={{ borderBottom: '1px solid #eee' }}>
               <td style={{ padding: '8px 0' }}>{u.email}</td>
               <td style={{ padding: '8px 0' }}>{u.password}</td>

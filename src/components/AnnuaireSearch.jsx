@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import * as XLSX from 'xlsx'
-import contactsFile from '../assets/Repertoire-telephoniqueACT22.xlsm'
+import contactsData from '../data/contacts.json'
 
 // Build unique, sorted list of values for a given key
 function buildUniqueList(data, key) {
@@ -94,7 +93,7 @@ function ResultsList({ contacts, onSelectPerson }) {
   )
 }
 
-export default function AnnuaireSearch() {
+export default function AnnuaireSearch({ initialSelectedId }) {
   const [contacts, setContacts] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -125,85 +124,44 @@ export default function AnnuaireSearch() {
   }
 
   useEffect(() => {
-    async function loadExcel() {
-      try {
-        setLoading(true)
-        setError(null)
+    try {
+      setLoading(true)
+      setError(null)
+      const normalized = Array.isArray(contactsData)
+        ? contactsData.map((row, index) => ({
+            id: row.id ?? String(index),
+            name: row.name ?? '',
+            affectation: row.affectation ?? '',
+            email: row.email ?? '',
+            phone: row.phone ?? '',
+            department: row.department ?? '',
+            matricule: row.matricule ?? '',
+            code: row.code ?? '',
+            extension: row.extension ?? '',
+            type: row.type ?? 'interne',
+          }))
+        : []
+      setContacts(normalized)
+    } catch (err) {
+      console.error(err)
+      setError('Erreur lors du chargement des contacts.')
+      setContacts([])
+    } finally {
+      setLoading(false)
+    }
+  }, [])
 
-        const response = await fetch(contactsFile)
-        if (!response.ok) {
-          throw new Error('Impossible de charger le fichier Excel.')
-        }
-
-        const arrayBuffer = await response.arrayBuffer()
-        const workbook = XLSX.read(arrayBuffer, { type: 'array' })
-        const allRows = []
-
-        workbook.SheetNames.forEach((sheetName) => {
-          const sheet = workbook.Sheets[sheetName]
-          const rows = XLSX.utils.sheet_to_json(sheet, { defval: '' })
-          allRows.push(...rows)
-        })
-
-        const normalized = allRows.map((row, index) => {
-          const name = getFirstMatchingValue(row, [
-            'nom',
-            'prénom',
-            'prenom',
-            'nom et prénom',
-            'interlocuteur',
-          ])
-
-          const affectation = getFirstMatchingValue(row, ['affectation'])
-
-          const email = getFirstMatchingValue(row, ['email', 'courriel', 'mail'])
-
-          const phone = getFirstMatchingValue(row, ['téléphone', 'telephone', 'portable'])
-
-          const department = getFirstMatchingValue(row, [
-            'département',
-            'departement',
-            'service',
-            'site',
-            'organisation',
-          ])
-
-          const matricule = getFirstMatchingValue(row, ['matricule'])
-          const code = getFirstMatchingValue(row, ['code'])
-          const extension = getFirstMatchingValue(row, ['extension', 'poste', 'ext'])
-
-          const typeRaw = getFirstMatchingValue(row, ['type', 'nature'])
-          const type =
-            (typeof typeRaw === 'string' && typeRaw.toLowerCase().includes('exter'))
-              ? 'externe'
-              : 'interne'
-
-          return {
-            id: String(index),
-            name,
-            affectation,
-            email,
-            phone,
-            department,
-            matricule,
-            code,
-            extension,
-            type,
-            ...row,
-          }
-        })
-
-        setContacts(normalized)
-      } catch (err) {
-        console.error(err)
-        setError(err.message || 'Erreur lors du chargement des contacts.')
-      } finally {
-        setLoading(false)
+  useEffect(() => {
+    if (!initialSelectedId || !contacts.length) return
+    const found = contacts.find((c) => String(c.id) === String(initialSelectedId))
+    if (found) {
+      setSelectedPerson(found)
+      setShowResults(true)
+      if (found.name) {
+        setSearchText(found.name)
       }
     }
-
-    loadExcel()
-  }, [])
+  }, [initialSelectedId, contacts])
 
   const affectations = useMemo(
     () => buildUniqueList(contacts, 'affectation'),

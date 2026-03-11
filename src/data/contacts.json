@@ -1,0 +1,51 @@
+[
+  {
+    "id": "1",
+    "name": "Youssef El Amrani",
+    "affectation": "Direction Générale",
+    "email": "direction@smm.ma",
+    "phone": "+212 6 12 34 56 78",
+    "department": "Direction",
+    "matricule": "DG001",
+    "code": "1001",
+    "extension": "201",
+    "type": "interne"
+  },
+  {
+    "id": "2",
+    "name": "Salma Benali",
+    "affectation": "Ressources Humaines",
+    "email": "rh@smm.ma",
+    "phone": "+212 6 23 45 67 89",
+    "department": "Ressources Humaines",
+    "matricule": "RH010",
+    "code": "1002",
+    "extension": "202",
+    "type": "interne"
+  },
+  {
+    "id": "3",
+    "name": "Omar Alaoui",
+    "affectation": "Comptabilité",
+    "email": "compta@smm.ma",
+    "phone": "+212 6 34 56 78 90",
+    "department": "Comptabilité",
+    "matricule": "CP020",
+    "code": "1003",
+    "extension": "203",
+    "type": "interne"
+  },
+  {
+    "id": "4",
+    "name": "Société Transport Nord",
+    "affectation": "Prestataire Logistique",
+    "email": "contact@transport-nord.ma",
+    "phone": "+212 5 12 34 56 78",
+    "department": "Externe",
+    "matricule": "",
+    "code": "EXT001",
+    "extension": "",
+    "type": "externe"
+  }
+]
+

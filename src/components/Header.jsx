@@ -1,19 +1,28 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../hooks/useAuth'
+import { searchEmployees } from '../services/searchEmployees'
+import SearchResults from './SearchResults.jsx'
+import { getNewsDemo } from '../services/newsService'
+import { getGalleryDemo } from '../services/galleryService'
 
 function Header() {
   const navigate = useNavigate()
+  const { user, logout } = useAuth()
   const [searchValue, setSearchValue] = useState('')
+  const [employeeResults, setEmployeeResults] = useState([])
+  const [newsResults, setNewsResults] = useState([])
+  const [galleryResults, setGalleryResults] = useState([])
+  const [isSearchLoading, setIsSearchLoading] = useState(false)
+  const [showSearchResults, setShowSearchResults] = useState(false)
   const [showNotifications, setShowNotifications] = useState(false)
   const [isNavOpen, setIsNavOpen] = useState(true)
   const [showProfileMenu, setShowProfileMenu] = useState(false)
 
-  const storedUser = localStorage.getItem('user')
-  const currentUser = storedUser ? JSON.parse(storedUser) : null
-  const isAdmin = !!currentUser?.isAdmin
+  const isAdmin = !!user?.isAdmin
 
-  const displayName = currentUser?.name || 'Utilisateur invité'
-  const displayPosition = currentUser?.position || (isAdmin ? 'Administrateur' : 'Collaborateur')
+  const displayName = user?.name || 'Utilisateur invité'
+  const displayPosition = user?.position || (isAdmin ? 'Administrateur' : 'Collaborateur')
   const initials = displayName
     .split(' ')
     .filter(Boolean)
@@ -53,17 +62,130 @@ function Header() {
     },
   ]
 
+  const searchWrapperRef = useRef(null)
+  const searchTimeoutRef = useRef(null)
+
+  const [newsItems, setNewsItems] = useState([])
+  const [galleryItems, setGalleryItems] = useState([])
+
+  useEffect(() => {
+    let isMounted = true
+
+    async function loadContent() {
+      try {
+        const [news, gallery] = await Promise.all([getNewsDemo(), getGalleryDemo()])
+        if (!isMounted) return
+        setNewsItems(Array.isArray(news) ? news : [])
+        setGalleryItems(Array.isArray(gallery) ? gallery : [])
+      } catch {
+        if (!isMounted) return
+        setNewsItems([])
+        setGalleryItems([])
+      }
+    }
+
+    loadContent()
+
+    return () => {
+      isMounted = false
+    }
+  }, [])
+
+  useEffect(() => {
+    if (searchTimeoutRef.current) {
+      clearTimeout(searchTimeoutRef.current)
+    }
+
+    const query = searchValue.trim()
+    if (!query) {
+      setEmployeeResults([])
+      setNewsResults([])
+      setGalleryResults([])
+      setIsSearchLoading(false)
+      return
+    }
+
+    setIsSearchLoading(true)
+    searchTimeoutRef.current = setTimeout(() => {
+      try {
+        const empRes = searchEmployees(query)
+        const q = query.toLowerCase()
+
+        const newsRes = newsItems.filter((n) => {
+          const hay = `${n.shortTitle || ''} ${n.title || ''} ${n.subtitle || ''}`.toLowerCase()
+          return hay.includes(q)
+        })
+
+        const galRes = galleryItems.filter((g) =>
+          (g.title || '').toLowerCase().includes(q),
+        )
+
+        setEmployeeResults(empRes)
+        setNewsResults(newsRes)
+        setGalleryResults(galRes)
+        setShowSearchResults(true)
+      } finally {
+        setIsSearchLoading(false)
+      }
+    }, 300)
+
+    return () => {
+      if (searchTimeoutRef.current) {
+        clearTimeout(searchTimeoutRef.current)
+      }
+    }
+  }, [searchValue])
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (!searchWrapperRef.current) return
+      if (!searchWrapperRef.current.contains(event.target)) {
+        setShowSearchResults(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [])
+
+  function handleSelectEmployee(emp) {
+    setShowSearchResults(false)
+    setSearchValue('')
+    navigate(`/annuaire/${emp.id}`)
+  }
+
+  function handleSelectNews(item) {
+    setShowSearchResults(false)
+    setSearchValue('')
+    navigate(`/news?id=${encodeURIComponent(item.id)}`)
+  }
+
+  function handleSelectGallery(item) {
+    setShowSearchResults(false)
+    setSearchValue('')
+    navigate(`/gallery?id=${encodeURIComponent(item.id)}`)
+  }
+
   return (
     <header className="top-header">
       <div className="header-bar">
         <div className="header-left">
           <div className="header-logo">
-            <a href='src\pages\Home'><img src="src/assets/logo intranet white.svg" alt="SMM Socodam Davum Intranet" /></a>
+            <button
+              type="button"
+              onClick={() => navigate('/home')}
+              className="header-logo-button"
+              aria-label="Aller à l'accueil"
+            >
+              <img src="src/assets/logo intranet white.svg" alt="SMM Socodam Davum Intranet" />
+            </button>
           </div>
         </div>
 
         <div className="header-center">
-          <div className="search-box">
+          <div className="search-box" ref={searchWrapperRef}>
             <div className="search-content">
               <img src="src/assets/loop.svg" alt="Rechercher" className="search-icon" />
               <input
@@ -74,9 +196,26 @@ function Header() {
                 onChange={(e) => {
                   const value = e.target.value
                   setSearchValue(value)
+                  if (value.trim()) {
+                    setShowSearchResults(true)
+                  } else {
+                    setShowSearchResults(false)
+                  }
                 }}
               />
             </div>
+            {showSearchResults && (
+              <SearchResults
+                employees={employeeResults}
+                news={newsResults}
+                gallery={galleryResults}
+                isLoading={isSearchLoading}
+                query={searchValue}
+                onSelectEmployee={handleSelectEmployee}
+                onSelectNews={handleSelectNews}
+                onSelectGallery={handleSelectGallery}
+              />
+            )}
           </div>
         </div>
 
@@ -117,7 +256,7 @@ function Header() {
                 type="button"
                 className="profile-menu-item"
                 onClick={() => {
-                  localStorage.removeItem('user')
+                  logout()
                   navigate('/login')
                 }}
               >

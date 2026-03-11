@@ -5,40 +5,28 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import gLogo from '../assets/Google__G__logo.svg'
 import HideIcon from '../assets/Hide.svg'
 import SeeIcon from '../assets/See.svg'
-import { mockUsers } from './UserJson'
+import { useAuth } from '../hooks/useAuth'
+import { loginWithCredentials, loginWithGoogle as authLoginWithGoogle } from '../services/authService'
 
 function Login() {
   const navigate = useNavigate()
   const location = useLocation()
+  const { login } = useAuth()
 
   const [showPassword, setShowPassword] = useState(false)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [errorMsg, setErrorMsg] = useState(location.state?.error || '')
 
-  const login = useGoogleLogin({
+  const googleLogin = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
       try {
-        const res = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
-          headers: {
-            Authorization: `Bearer ${tokenResponse.access_token}`
-          }
-        })
-
-        const profile = await res.json()
-
-        const userData = {
-          token: tokenResponse.access_token,
-          email: profile.email,
-          name: profile.name,
-          picture: profile.picture,
-          sub: profile.sub,
-        }
-
-        localStorage.setItem('user', JSON.stringify(userData))
-        navigate('/home')
+        const result = await authLoginWithGoogle(tokenResponse.access_token)
+        login(result)
+        const redirectTo = location.state?.from?.pathname || '/home'
+        navigate(redirectTo, { replace: true })
       } catch (err) {
-        console.error('Failed to fetch Google user info', err)
+        console.error('Failed to login with Google', err)
         setErrorMsg('Échec de connexion avec Google')
       }
     },
@@ -48,24 +36,17 @@ function Login() {
     }
   })
 
-  const handleStandardLogin = (e) => {
+  const handleStandardLogin = async (e) => {
     e.preventDefault()
     setErrorMsg('')
 
-    const user = mockUsers.find(u => u.email === email && u.password === password)
-
-    if (user) {
-      localStorage.setItem('user', JSON.stringify({
-        email: user.email,
-        password: user.password,
-        name: user.name,
-        position: user.position,
-        token: user.token,
-        isAdmin: !!user.isAdmin,
-      }))
-      navigate('/home')
-    } else {
-      setErrorMsg('Email ou mot de passe invalide')
+    try {
+      const result = await loginWithCredentials(email, password)
+      login(result)
+      const redirectTo = location.state?.from?.pathname || '/home'
+      navigate(redirectTo, { replace: true })
+    } catch (err) {
+      setErrorMsg(err.message || 'Email ou mot de passe invalide')
     }
   }
 
@@ -82,7 +63,7 @@ function Login() {
               <button
                 type="button"
                 className="my-google-btn"
-                onClick={() => login()}
+                onClick={() => googleLogin()}
               >
                 <img src={gLogo} alt="Google logo" className='glogo' />
                 <p className='auth text'>Continue with Google</p>
@@ -131,7 +112,11 @@ function Login() {
           </div>
         </div>
         <div className="login-image">
-          <img src="src/assets/ray-donnelly-YybYC5zC1Mk-unsplash 1.jpg" alt="" />
+          <img
+            src="src/assets/ray-donnelly-YybYC5zC1Mk-unsplash 1.jpg"
+            alt=""
+            loading="lazy"
+          />
         </div>
       </div>
       <div className='footer-login'>

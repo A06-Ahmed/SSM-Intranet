@@ -1,0 +1,57 @@
+[
+  {
+    "id": "1",
+    "name": "Youssef El Amrani",
+    "email": "direction@smm.ma",
+    "phone": "+212 6 12 34 56 78",
+    "department": "Direction",
+    "position": "Directeur Général",
+    "photo": "src/assets/Annuaire asset/Untitled-1.jpg"
+  },
+  {
+    "id": "2",
+    "name": "Salma Benali",
+    "email": "rh@smm.ma",
+    "phone": "+212 6 23 45 67 89",
+    "department": "Ressources Humaines",
+    "position": "Responsable Ressources Humaines",
+    "photo": "src/assets/Annuaire asset/Frame 291.png"
+  },
+  {
+    "id": "3",
+    "name": "Omar Alaoui",
+    "email": "compta@smm.ma",
+    "phone": "+212 6 34 56 78 90",
+    "department": "Comptabilité",
+    "position": "Responsable Comptabilité",
+    "photo": "src/assets/Annuaire asset/Frame 292.png"
+  },
+  {
+    "id": "5",
+    "name": "Marie Dupont",
+    "email": "marie.dupont@smm.ma",
+    "phone": "+212 6 45 67 89 01",
+    "department": "Ressources Humaines",
+    "position": "Chargée de recrutement",
+    "photo": "src/assets/Annuaire asset/Frame 293.png"
+  },
+  {
+    "id": "6",
+    "name": "Marc Laurent",
+    "email": "marc.laurent@smm.ma",
+    "phone": "+212 6 56 78 90 12",
+    "department": "IT",
+    "position": "Responsable IT",
+    "photo": "src/assets/Annuaire asset/Frame 294.png"
+  },
+  {
+    "id": "7",
+    "name": "Martin Benali",
+    "email": "martin.benali@smm.ma",
+    "phone": "+212 6 67 89 01 23",
+    "department": "Finance",
+    "position": "Contrôleur de gestion",
+    "photo": "src/assets/Annuaire asset/Group 38.png"
+  }
+]
+

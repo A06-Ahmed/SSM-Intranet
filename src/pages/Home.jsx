@@ -48,6 +48,7 @@ function Home() {
   const featuredPosts = [
     {
       id: 1,
+      newsId: 'grand-stade-hassan-ii',
       title: 'Réalisation du Grand Stade Hassan II',
       description:
         "Nous avons eu l’honneur d’accompagner la réalisation de ce projet d’envergure nationale aux côtés de notre client, en fournissant un tonnage important d’acier façonné.",
@@ -56,6 +57,7 @@ function Home() {
     },
     {
       id: 2,
+      newsId: 'port-safi',
       title: 'Projet Stratégique au Port de Safi',
       description:
         'Près de 3000 tonnes d’acier coupé, façonné et galvanisé ont été assemblées par nos équipes pour un nouveau quai, illustrant notre maîtrise technique et logistique.',
@@ -64,6 +66,7 @@ function Home() {
     },
     {
       id: 3,
+      newsId: 'bureaux-etudes',
       title: 'L’Excellence de nos Bureaux d’Études',
       description:
         'Partenaires de la performance, nos ingénieurs et techniciens conçoivent des solutions fiables et conformes aux normes les plus strictes pour garantir la durabilité des ouvrages.',
@@ -72,6 +75,7 @@ function Home() {
     },
     {
       id: 3,
+      newsId: 'bureaux-etudes',
       title: 'L’Excellence de nos Bureaux d’Études',
       description:
         'Partenaires de la performance, nos ingénieurs et techniciens conçoivent des solutions fiables et conformes aux normes les plus strictes pour garantir la durabilité des ouvrages.',
@@ -81,6 +85,7 @@ function Home() {
 
     {
       id: 2,
+      newsId: 'port-safi',
       title: 'Projet Stratégique au Port de Safi',
       description:
         'Près de 3000 tonnes d’acier coupé, façonné et galvanisé ont été assemblées par nos équipes pour un nouveau quai, illustrant notre maîtrise technique et logistique.',
@@ -295,12 +300,17 @@ function Home() {
                   type="button"
                   className="featured-card"
                   onClick={() => {
-                    // Placeholder: redirect to news list for now
-                    navigate('/news')
+                    const id = post.newsId
+                    navigate(id ? `/news?id=${encodeURIComponent(id)}` : '/news')
                   }}
                 >
                   <div className="featured-image-wrapper">
-                    <img src={post.image} alt={post.title} className="featured-image" />
+                    <img
+                      src={post.image}
+                      alt={post.title}
+                      className="featured-image"
+                      loading="lazy"
+                    />
                   </div>
                   <div className="featured-content">
                     <h3 className="featured-title">{post.title}</h3>
