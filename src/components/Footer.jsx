@@ -1,26 +1,28 @@
+import { Link } from 'react-router-dom'
+
 function Footer() {
   const aPropos = [
-    "Infos d'entreprise",
-    'Mission et valeurs',
-    'Direction',
+    { label: "Infos d'entreprise", to: '/infos-entreprise' },
+    { label: 'Histoire', to: '/histoire' },
+    { label: 'Direction', to: '/direction' },
   ]
 
   const ressources = [
-    "Guide de l'employé",
-    'Support informatique',
-    'Portail RH',
+    { label: 'Portail RH', to: '/portail-rh' },
+    { label: 'Support informatique', to: '/support-informatique' },
+    { label: "Guide de l'employé", to: '/guide-employe' },
   ]
 
   const accesRapide = [
-    'Annonce',
-    'À la une',
-    'Galerie',
+    { label: 'Annonce', to: '/home#annonce' },
+    { label: 'À la une', to: '/news' },
+    { label: 'Galerie', to: '/gallery' },
   ]
 
   const contact = [
-    'Assistance',
-    'Commentaires',
-    'Suggestions',
+    { label: 'Assistance', to: '/assistance' },
+    { label: 'Commentaires', to: '/support-informatique' },
+    { label: 'Suggestions', to: '/support-informatique' },
   ]
 
   return (
@@ -29,36 +31,36 @@ function Footer() {
         <div className="footer-column">
           <div className="footer-column-title">À propos</div>
           {aPropos.map((item) => (
-            <a key={item} href="#" className="footer-link">
-              {item}
-            </a>
+            <Link key={item.to} to={item.to} className="footer-link">
+              {item.label}
+            </Link>
           ))}
         </div>
 
         <div className="footer-column">
           <div className="footer-column-title">Ressources</div>
           {ressources.map((item) => (
-            <a key={item} href="#" className="footer-link">
-              {item}
-            </a>
+            <Link key={item.to} to={item.to} className="footer-link">
+              {item.label}
+            </Link>
           ))}
         </div>
 
         <div className="footer-column">
           <div className="footer-column-title">Accès rapide</div>
           {accesRapide.map((item) => (
-            <a key={item} href="#" className="footer-link">
-              {item}
-            </a>
+            <Link key={item.to} to={item.to} className="footer-link">
+              {item.label}
+            </Link>
           ))}
         </div>
 
         <div className="footer-column">
           <div className="footer-column-title">Contact</div>
           {contact.map((item) => (
-            <a key={item} href="#" className="footer-link">
-              {item}
-            </a>
+            <Link key={item.label} to={item.to} className="footer-link">
+              {item.label}
+            </Link>
           ))}
         </div>
       </div>

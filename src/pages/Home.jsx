@@ -237,6 +237,7 @@ function Home() {
 
       <section
         ref={announcementsRef}
+        id="annonce"
         className="announcements-section announcements-hidden"
       >
         <h2 className="announcements-title-main">Annonce</h2>

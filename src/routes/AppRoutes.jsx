@@ -14,6 +14,13 @@ const ReportingDemoPage = lazy(() => import('../pages/ReportingDemo.jsx'))
 const SuiviArmatureDemoPage = lazy(() => import('../pages/SuiviArmatureDemo.jsx'))
 const AdminDemoPage = lazy(() => import('../pages/AdminDemo.jsx'))
 const AnnuairePage = lazy(() => import('../pages/Annuaire.jsx'))
+const InfosEntreprisePage = lazy(() => import('../pages/InfosEntreprise.jsx'))
+const HistoirePage = lazy(() => import('../pages/Histoire.jsx'))
+const DirectionPage = lazy(() => import('../pages/Direction.jsx'))
+const PortailRHPage = lazy(() => import('../pages/PortailRH.jsx'))
+const SupportInformatiquePage = lazy(() => import('../pages/SupportInformatique.jsx'))
+const GuideEmployePage = lazy(() => import('../pages/GuideEmploye.jsx'))
+const AssistancePage = lazy(() => import('../pages/Assistance.jsx'))
 
 function AppRoutes() {
   return (
@@ -113,6 +120,62 @@ function AppRoutes() {
             element={
               <ProtectedRoute>
                 <AnnuairePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/infos-entreprise"
+            element={
+              <ProtectedRoute>
+                <InfosEntreprisePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/histoire"
+            element={
+              <ProtectedRoute>
+                <HistoirePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/direction"
+            element={
+              <ProtectedRoute>
+                <DirectionPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/portail-rh"
+            element={
+              <ProtectedRoute>
+                <PortailRHPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/support-informatique"
+            element={
+              <ProtectedRoute>
+                <SupportInformatiquePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/guide-employe"
+            element={
+              <ProtectedRoute>
+                <GuideEmployePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/assistance"
+            element={
+              <ProtectedRoute>
+                <AssistancePage />
               </ProtectedRoute>
             }
           />

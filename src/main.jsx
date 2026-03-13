@@ -12,7 +12,7 @@ const Root = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 1500); // Loader shows here
+    const timer = setTimeout(() => setLoading(false), 2000); // Loader shows here
     return () => clearTimeout(timer);
   }, []);
 

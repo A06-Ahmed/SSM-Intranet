@@ -36,7 +36,7 @@ function SearchResults({
               className="search-results-item"
               onClick={() => onSelectEmployee?.(emp)}
             >
-              <div className="search-results-avatar">
+              <div className="search-results-avatar" aria-hidden="true">
                 <span>
                   {emp.name
                     .split(' ')
@@ -73,9 +73,6 @@ function SearchResults({
               className="search-results-item"
               onClick={() => onSelectNews?.(item)}
             >
-              <div className="search-results-avatar">
-                <span>AN</span>
-              </div>
               <div className="search-results-info">
                 <div className="search-results-name">{item.shortTitle || item.title}</div>
                 <div className="search-results-meta">
@@ -96,9 +93,6 @@ function SearchResults({
               className="search-results-item"
               onClick={() => onSelectGallery?.(item)}
             >
-              <div className="search-results-avatar">
-                <span>GA</span>
-              </div>
               <div className="search-results-info">
                 <div className="search-results-name">{item.title}</div>
                 <div className="search-results-meta">
