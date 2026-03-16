@@ -68,7 +68,9 @@ function Login() {
                 <img src={gLogo} alt="Google logo" className='glogo' />
                 <p className='auth text'>Continue with Google</p>
               </button>
-
+              <a href="http://localhost:5000/auth/google" class="btn-google">
+                  Login with Google
+              </a>
               <div className='or'>
                 <div className='orfill'></div>
                 <p>OU</p>

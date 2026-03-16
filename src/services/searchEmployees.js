@@ -1,40 +1,15 @@
-import contacts from '../data/contacts.json'
+import { apiFetch } from './api.js'
 
-function normalize(value) {
-  return (value || '').toString().toLowerCase()
-}
-
-// Build a normalized "employee view" from annuaire contacts
-const employees = contacts.map((c) => ({
-  id: c.id,
-  name: c.name || '',
-  email: c.email || '',
-  phone: c.phone || '',
-  department: c.department || '',
-  position: c.affectation || c.department || '',
-}))
-
-export function searchEmployees(query) {
-  const q = normalize(query).trim()
+export async function searchEmployees(query) {
+  const q = (query || '').trim()
   if (!q) return []
 
-  return employees.filter((emp) => {
-    const haystack = [
-      emp.name,
-      emp.email,
-      emp.phone,
-      emp.department,
-      emp.position,
-    ]
-      .map(normalize)
-      .join(' ')
-
-    return haystack.includes(q)
-  })
+  const response = await apiFetch(`/employees?search=${encodeURIComponent(q)}`)
+  return response?.data?.items || []
 }
 
-export function getEmployeeById(id) {
+export async function getEmployeeById(id) {
   if (!id) return null
-  return employees.find((e) => String(e.id) === String(id)) || null
+  const response = await apiFetch(`/employees/${id}`)
+  return response?.data || null
 }
-

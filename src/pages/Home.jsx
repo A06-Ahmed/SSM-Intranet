@@ -1,102 +1,18 @@
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import AnnuaireSearch from '../components/AnnuaireSearch'
+import { getAnnouncements } from '../services/announcementsService.js'
+import { getNewsDemo } from '../services/newsService'
 
 function Home() {
   const navigate = useNavigate()
   const announcementsRef = useRef(null)
 
-  const announcements = [
-    {
-      id: 1,
-      title: 'Maintenance Programmée du Système',
-      description: "L'intranet sera en maintenance planifiée le 15 octobre de 02h00 à 04h00.",
-      date: '2 Mar.',
-      severity: 'high',
-      severityLabel: 'Haute',
-    },
-    {
-      id: 2,
-      title: 'Nouveaux Avantages Santé Disponibles',
-      description:
-        "Les nouveaux plans d’assurance maladie sont disponibles. Consultez votre e-mail pour plus de détails.",
-      date: '23 Jan.',
-      severity: 'medium',
-      severityLabel: 'Moyenne',
-    },
-    {
-      id: 3,
-      title: 'Réunion Générale la Semaine Prochaine',
-      description:
-        'Rejoignez-nous pour notre réunion trimestrielle le 14 mars à 10h00 dans le grand auditorium.',
-      date: '4 Jan.',
-      severity: 'medium',
-      severityLabel: 'Moyenne',
-    },
-    {
-      id: 4,
-      title: 'Mise à Jour des Protocoles de Sécurité',
-      description:
-        "Veuillez consulter les nouvelles directives de sécurité informatique dans le guide de l’employé.",
-      date: '22 Déc.',
-      severity: 'high',
-      severityLabel: 'Haute',
-    },
-    
-  ]
+  const [announcements, setAnnouncements] = useState([])
+  const [isAnnouncementsLoading, setIsAnnouncementsLoading] = useState(true)
 
-  const featuredPosts = [
-    {
-      id: 1,
-      newsId: 'grand-stade-hassan-ii',
-      title: 'Réalisation du Grand Stade Hassan II',
-      description:
-        "Nous avons eu l’honneur d’accompagner la réalisation de ce projet d’envergure nationale aux côtés de notre client, en fournissant un tonnage important d’acier façonné.",
-      date: '25 février 2026',
-      image: 'src/assets/Rectangle.jpg',
-    },
-    {
-      id: 2,
-      newsId: 'port-safi',
-      title: 'Projet Stratégique au Port de Safi',
-      description:
-        'Près de 3000 tonnes d’acier coupé, façonné et galvanisé ont été assemblées par nos équipes pour un nouveau quai, illustrant notre maîtrise technique et logistique.',
-      date: '2 février 2026',
-      image: 'src/assets/Rectangle3.jpg',
-    },
-    {
-      id: 3,
-      newsId: 'bureaux-etudes',
-      title: 'L’Excellence de nos Bureaux d’Études',
-      description:
-        'Partenaires de la performance, nos ingénieurs et techniciens conçoivent des solutions fiables et conformes aux normes les plus strictes pour garantir la durabilité des ouvrages.',
-      date: '15 janvier 2026',
-      image: 'src/assets/image 8.jpg',
-    },
-    {
-      id: 3,
-      newsId: 'bureaux-etudes',
-      title: 'L’Excellence de nos Bureaux d’Études',
-      description:
-        'Partenaires de la performance, nos ingénieurs et techniciens conçoivent des solutions fiables et conformes aux normes les plus strictes pour garantir la durabilité des ouvrages.',
-      date: '15 janvier 2026',
-      image: 'src/assets/image 8.jpg',
-    },
-
-    {
-      id: 2,
-      newsId: 'port-safi',
-      title: 'Projet Stratégique au Port de Safi',
-      description:
-        'Près de 3000 tonnes d’acier coupé, façonné et galvanisé ont été assemblées par nos équipes pour un nouveau quai, illustrant notre maîtrise technique et logistique.',
-      date: '2 février 2026',
-      image: 'src/assets/Rectangle3.jpg',
-    },
-
-    
-    
-    
-  ]
+  const [featuredPosts, setFeaturedPosts] = useState([])
+  const [isFeaturedLoading, setIsFeaturedLoading] = useState(true)
 
   const [featuredIndex, setFeaturedIndex] = useState(0)
   const visibleCount = 3
@@ -128,6 +44,79 @@ function Home() {
     return () => observer.disconnect()
   }, [])
 
+  useEffect(() => {
+    let isMounted = true
+
+    async function fetchAnnouncements() {
+      try {
+        setIsAnnouncementsLoading(true)
+        const items = await getAnnouncements()
+        if (!isMounted) return
+        setAnnouncements(items)
+      } catch (err) {
+        if (!isMounted) return
+        console.error('Erreur lors du chargement des annonces', err)
+        setAnnouncements([])
+      } finally {
+        if (!isMounted) return
+        setIsAnnouncementsLoading(false)
+      }
+    }
+
+    fetchAnnouncements()
+
+    return () => {
+      isMounted = false
+    }
+  }, [])
+
+  useEffect(() => {
+    let isMounted = true
+
+    async function fetchFeaturedNews() {
+      try {
+        setIsFeaturedLoading(true)
+        const items = await getNewsDemo()
+        if (!isMounted) return
+        const mapped = (items || []).slice(0, 6).map((item) => ({
+          id: item.id,
+          newsId: item.id,
+          title: item.title,
+          description: Array.isArray(item.content) ? item.content[0] || '' : '',
+          date: item.publishedAt || item.created_at || item.createdAt,
+          image: item.image || '',
+        }))
+        setFeaturedPosts(mapped)
+      } catch (err) {
+        if (!isMounted) return
+        console.error('Erreur lors du chargement des actualités', err)
+        setFeaturedPosts([])
+      } finally {
+        if (!isMounted) return
+        setIsFeaturedLoading(false)
+      }
+    }
+
+    fetchFeaturedNews()
+
+    return () => {
+      isMounted = false
+    }
+  }, [])
+
+  function formatAnnouncementDate(value) {
+    if (!value) return ''
+    const dateObj = value instanceof Date ? value : new Date(value)
+    if (Number.isNaN(dateObj.getTime())) return ''
+    return dateObj.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' })
+  }
+
+  function formatNewsDate(value) {
+    if (!value) return ''
+    const dateObj = value instanceof Date ? value : new Date(value)
+    if (Number.isNaN(dateObj.getTime())) return ''
+    return dateObj.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })
+  }
   useEffect(() => {
     const controller = new AbortController()
 
@@ -295,7 +284,13 @@ function Home() {
               className="featured-grid featured-track"
               style={{ transform: `translateX(-${(featuredIndex * 100) / visibleCount}%)` }}
             >
-              {featuredPosts.map((post) => (
+              {isFeaturedLoading && (
+                <div className="featured-card" style={{ padding: 24 }}>Chargement des actualit�s...</div>
+              )}
+              {!isFeaturedLoading && featuredPosts.length === 0 && (
+                <div className="featured-card" style={{ padding: 24 }}>Aucune actualit� disponible.</div>
+              )}
+              {!isFeaturedLoading && featuredPosts.map((post) => (
                 <button
                   key={post.id}
                   type="button"
@@ -306,12 +301,16 @@ function Home() {
                   }}
                 >
                   <div className="featured-image-wrapper">
-                    <img
-                      src={post.image}
-                      alt={post.title}
-                      className="featured-image"
-                      loading="lazy"
-                    />
+                    {post.image ? (
+                      <img
+                        src={post.image}
+                        alt={post.title}
+                        className="featured-image"
+                        loading="lazy"
+                      />
+                    ) : (
+                      <div className="featured-image" style={{ background: '#e2e8f0' }} />
+                    )}
                   </div>
                   <div className="featured-content">
                     <h3 className="featured-title">{post.title}</h3>
@@ -322,7 +321,7 @@ function Home() {
                         alt="Date de publication"
                         className="featured-meta-icon"
                       />
-                      <span className="featured-date">{post.date}</span>
+                      <span className="featured-date">{formatNewsDate(post.date)}</span>
                     </div>
                   </div>
                 </button>
@@ -391,4 +390,16 @@ function Home() {
 }
 
 export default Home
+
+
+
+
+
+
+
+
+
+
+
+
 

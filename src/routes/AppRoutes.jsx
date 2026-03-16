@@ -12,7 +12,6 @@ const AjirhDemoPage = lazy(() => import('../pages/AjirhDemo.jsx'))
 const KelioDemoPage = lazy(() => import('../pages/KelioDemo.jsx'))
 const ReportingDemoPage = lazy(() => import('../pages/ReportingDemo.jsx'))
 const SuiviArmatureDemoPage = lazy(() => import('../pages/SuiviArmatureDemo.jsx'))
-const AdminDemoPage = lazy(() => import('../pages/AdminDemo.jsx'))
 const AnnuairePage = lazy(() => import('../pages/Annuaire.jsx'))
 const InfosEntreprisePage = lazy(() => import('../pages/InfosEntreprise.jsx'))
 const HistoirePage = lazy(() => import('../pages/Histoire.jsx'))
@@ -69,14 +68,6 @@ function AppRoutes() {
           element={
             <ProtectedRoute>
               <SuiviArmatureDemoPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/demo/admin"
-          element={
-            <ProtectedRoute>
-              <AdminDemoPage />
             </ProtectedRoute>
           }
         />
@@ -190,4 +181,3 @@ function AppRoutes() {
 }
 
 export default AppRoutes
-

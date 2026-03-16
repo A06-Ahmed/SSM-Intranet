@@ -5,6 +5,7 @@ import { searchEmployees } from '../services/searchEmployees'
 import SearchResults from './SearchResults.jsx'
 import { getNewsDemo } from '../services/newsService'
 import { getGalleryDemo } from '../services/galleryService'
+import { getNotifications } from '../services/notificationService'
 
 function Header() {
   const navigate = useNavigate()
@@ -19,10 +20,12 @@ function Header() {
   const [isNavOpen, setIsNavOpen] = useState(true)
   const [showProfileMenu, setShowProfileMenu] = useState(false)
 
-  const isAdmin = !!user?.isAdmin
+  const roles = Array.isArray(user?.roles) ? user.roles.map((r) => r.name) : []
+  const isAdmin = roles.includes('Admin') || roles.includes('SuperAdmin') || roles.includes('HR') || roles.includes('Manager')
+  const adminUrl = import.meta.env.VITE_LARAVEL_ADMIN_URL || 'http://localhost:8000/admin'
 
-  const displayName = user?.name || 'Utilisateur invité'
-  const displayPosition = user?.position || (isAdmin ? 'Administrateur' : 'Collaborateur')
+  const displayName = user ? `${user.first_name} ${user.last_name}` : 'Utilisateur invité'
+  const displayPosition = isAdmin ? 'Administrateur' : 'Collaborateur'
   const initials = displayName
     .split(' ')
     .filter(Boolean)
@@ -36,31 +39,11 @@ function Header() {
     { id: 'kelio', label: 'Kelio', path: '/demo/kelio' },
     { id: 'reporting', label: 'Reporting', path: '/demo/reporting' },
     { id: 'suivi', label: 'Suivi Armature', path: '/demo/suivi-armature' },
-    ...(isAdmin ? [{ id: 'admin-demo', label: 'Admin Demo', path: '/demo/admin' }] : []),
+    ...(isAdmin ? [{ id: 'admin-dashboard', label: 'Admin', path: adminUrl, external: true }] : []),
   ]
 
-  const notificationCount = 3
-
-  const notifications = [
-    {
-      id: 1,
-      title: 'Congés collectifs d’été',
-      description: 'Les bureaux seront fermés du 12 au 18 août pour congés.',
-      time: 'Il y a 2 jours',
-    },
-    {
-      id: 2,
-      title: 'Maintenance planifiée',
-      description: 'Interruption de l’intranet samedi de 22h à minuit.',
-      time: 'Il y a 5 jours',
-    },
-    {
-      id: 3,
-      title: 'Nouvelle politique IT',
-      description: 'Merci de lire la nouvelle charte d’utilisation des outils.',
-      time: 'Il y a 1 semaine',
-    },
-  ]
+    const [notifications, setNotifications] = useState([])
+  const notificationCount = notifications.length
 
   const searchWrapperRef = useRef(null)
   const searchTimeoutRef = useRef(null)
@@ -68,10 +51,35 @@ function Header() {
   const [newsItems, setNewsItems] = useState([])
   const [galleryItems, setGalleryItems] = useState([])
 
-  useEffect(() => {
+    useEffect(() => {
     let isMounted = true
 
-    async function loadContent() {
+    async function loadNotifications() {
+      try {
+        const data = await getNotifications()
+        if (!isMounted) return
+        const mapped = (Array.isArray(data) ? data : []).map((n) => ({
+          id: n.id,
+          title: n.title,
+          description: n.body || '',
+          time: n.created_at,
+        }))
+        setNotifications(mapped)
+      } catch {
+        if (!isMounted) return
+        setNotifications([])
+      }
+    }
+
+    loadNotifications()
+    const interval = setInterval(loadNotifications, 60000)
+
+    return () => {
+      isMounted = false
+      clearInterval(interval)
+    }
+  }, [])
+  useEffect(() => {\r\n    let isMounted = true\r\n\r\n    async function loadContent() {
       try {
         const [news, gallery] = await Promise.all([getNewsDemo(), getGalleryDemo()])
         if (!isMounted) return
@@ -106,9 +114,9 @@ function Header() {
     }
 
     setIsSearchLoading(true)
-    searchTimeoutRef.current = setTimeout(() => {
+    searchTimeoutRef.current = setTimeout(async () => {
       try {
-        const empRes = searchEmployees(query)
+        const empRes = await searchEmployees(query)
         const q = query.toLowerCase()
 
         const newsRes = newsItems.filter((n) => {
@@ -284,7 +292,13 @@ function Header() {
             key={app.id}
             type="button"
             className="app-pill"
-            onClick={() => navigate(app.path)}
+            onClick={() => {
+              if (app.external) {
+                window.location.href = app.path
+                return
+              }
+              navigate(app.path)
+            }}
           >
             {app.label}
           </button>
@@ -319,4 +333,8 @@ function Header() {
 }
 
 export default Header
+
+
+
+
 

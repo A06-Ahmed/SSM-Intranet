@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import contactsData from '../data/contacts.json'
+import { apiFetch } from '../services/api.js'
 
 // Build unique, sorted list of values for a given key
 function buildUniqueList(data, key) {
@@ -124,30 +124,44 @@ export default function AnnuaireSearch({ initialSelectedId }) {
   }
 
   useEffect(() => {
-    try {
-      setLoading(true)
-      setError(null)
-      const normalized = Array.isArray(contactsData)
-        ? contactsData.map((row, index) => ({
-            id: row.id ?? String(index),
-            name: row.name ?? '',
-            affectation: row.affectation ?? '',
-            email: row.email ?? '',
-            phone: row.phone ?? '',
-            department: row.department ?? '',
-            matricule: row.matricule ?? '',
-            code: row.code ?? '',
-            extension: row.extension ?? '',
-            type: row.type ?? 'interne',
-          }))
-        : []
-      setContacts(normalized)
-    } catch (err) {
-      console.error(err)
-      setError('Erreur lors du chargement des contacts.')
-      setContacts([])
-    } finally {
-      setLoading(false)
+    let isMounted = true
+
+    async function loadEmployees() {
+      try {
+        setLoading(true)
+        setError(null)
+        const response = await apiFetch('/employees')
+        const items = response?.data?.items || response?.data || []
+        const normalized = items.map((row) => ({
+          id: row.id,
+          name: row.user ? `${row.user.first_name} ${row.user.last_name}` : '',
+          affectation: row.position ?? '',
+          email: row.user?.email ?? '',
+          phone: row.phone ?? '',
+          department: row.department?.name ?? '',
+          matricule: row.matricule ?? '',
+          code: '',
+          extension: '',
+          type: 'interne',
+        }))
+        if (isMounted) {
+          setContacts(normalized)
+        }
+      } catch (err) {
+        console.error(err)
+        if (isMounted) {
+          setError('Erreur lors du chargement des contacts.')
+          setContacts([])
+        }
+      } finally {
+        if (isMounted) setLoading(false)
+      }
+    }
+
+    loadEmployees()
+
+    return () => {
+      isMounted = false
     }
   }, [])
 
@@ -333,4 +347,3 @@ export default function AnnuaireSearch({ initialSelectedId }) {
     </div>
   )
 }
-

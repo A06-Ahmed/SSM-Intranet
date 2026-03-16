@@ -1,4 +1,4 @@
-import users from '../data/users.json'
+import { apiFetch } from './api.js'
 
 const GOOGLE_USERINFO_URL = 'https://www.googleapis.com/oauth2/v3/userinfo'
 
@@ -25,29 +25,22 @@ async function fetchGoogleProfile(accessToken) {
 }
 
 export async function loginWithCredentials(email, password) {
-  const trimmedEmail = (email || '').trim().toLowerCase()
-  const trimmedPassword = (password || '').trim()
-
-  const user = users.find(
-    (u) =>
-      (u.email || '').toLowerCase() === trimmedEmail &&
-      (u.password || '') === trimmedPassword,
-  )
-
-  if (!user) {
-    throw new Error('Email ou mot de passe invalide')
+  const payload = {
+    email: (email || '').trim().toLowerCase(),
+    password: (password || '').trim(),
   }
 
-  const safeUser = {
-    name: user.name,
-    email: user.email,
-    position: user.position,
-    isAdmin: !!user.isAdmin,
-  }
+  const response = await apiFetch('/auth/login', {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  })
+
+  const data = response?.data || {}
 
   return {
-    user: safeUser,
-    token: user.token,
+    user: data.user,
+    token: data.access_token,
+    refreshToken: data.refresh_token,
   }
 }
 
@@ -66,20 +59,13 @@ export async function loginWithGoogle(accessToken) {
 
 export async function getCurrentUser(token) {
   if (!token) return null
-
-  const fromDemo = users.find((u) => u.token === token)
-  if (fromDemo) {
-    return {
-      name: fromDemo.name,
-      email: fromDemo.email,
-      position: fromDemo.position,
-      isAdmin: !!fromDemo.isAdmin,
-    }
-  }
-
   try {
-    const googleProfile = await fetchGoogleProfile(token)
-    return googleProfile
+    const response = await apiFetch('/auth/profile', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    return response?.data || null
   } catch {
     return null
   }
@@ -87,5 +73,5 @@ export async function getCurrentUser(token) {
 
 export function logout() {
   localStorage.removeItem('auth_token')
+  localStorage.removeItem('refresh_token')
 }
-
