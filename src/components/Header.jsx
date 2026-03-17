@@ -79,7 +79,10 @@ function Header() {
       clearInterval(interval)
     }
   }, [])
-  useEffect(() => {\r\n    let isMounted = true\r\n\r\n    async function loadContent() {
+  useEffect(() => {
+    let isMounted = true
+
+    async function loadContent() {
       try {
         const [news, gallery] = await Promise.all([getNewsDemo(), getGalleryDemo()])
         if (!isMounted) return
@@ -333,6 +336,8 @@ function Header() {
 }
 
 export default Header
+
+
 
 
 
