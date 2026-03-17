@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import AnnuaireSearch from '../components/AnnuaireSearch'
 import { getAnnouncements } from '../services/announcementsService.js'
 import { getNewsDemo } from '../services/newsService'
+import { formatAbsoluteDateTime, formatTimeAgo } from '../utils/dateFormat'
 
 function Home() {
   const navigate = useNavigate()
@@ -103,20 +104,6 @@ function Home() {
       isMounted = false
     }
   }, [])
-
-  function formatAnnouncementDate(value) {
-    if (!value) return ''
-    const dateObj = value instanceof Date ? value : new Date(value)
-    if (Number.isNaN(dateObj.getTime())) return ''
-    return dateObj.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' })
-  }
-
-  function formatNewsDate(value) {
-    if (!value) return ''
-    const dateObj = value instanceof Date ? value : new Date(value)
-    if (Number.isNaN(dateObj.getTime())) return ''
-    return dateObj.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })
-  }
   useEffect(() => {
     const controller = new AbortController()
 
@@ -232,7 +219,20 @@ function Home() {
         <h2 className="announcements-title-main">Annonce</h2>
         <div className="announcements-card">
           <ul className="announcements-list">
-            {announcements.map((item) => (
+            {isAnnouncementsLoading && (
+              <li className="announcement-row">
+                <div className="announcement-skeleton">
+                  <div className="skeleton skeleton-circle" />
+                  <div className="announcement-skeleton-text">
+                    <div className="skeleton skeleton-line" />
+                    <div className="skeleton skeleton-line short" />
+                    <div className="skeleton skeleton-line tiny" />
+                  </div>
+                  <div className="skeleton skeleton-badge" />
+                </div>
+              </li>
+            )}
+            {!isAnnouncementsLoading && announcements.map((item) => (
               <li key={item.id} className="announcement-row">
                 <div className="announcement-left">
                   <div
@@ -240,7 +240,7 @@ function Home() {
                   >
                     <img
                       src="src/assets/notification.svg"
-                      alt="IcÃ´ne alerte"
+                      alt="Ic??ne alerte"
                     />
                   </div>
                   <div className="announcement-text">
@@ -248,7 +248,7 @@ function Home() {
                     <div className="announcement-description">
                       {item.description}
                     </div>
-                    <div className="announcement-date">{item.date}</div>
+                    <div className="announcement-date">{formatTimeAgo(item.date)}</div>
                   </div>
                 </div>
                 <span
@@ -285,7 +285,14 @@ function Home() {
               style={{ transform: `translateX(-${(featuredIndex * 100) / visibleCount}%)` }}
             >
               {isFeaturedLoading && (
-                <div className="featured-card" style={{ padding: 24 }}>Chargement des actualités...</div>
+                <div className="featured-card featured-skeleton-card">
+                  <div className="skeleton skeleton-image" />
+                  <div className="featured-content">
+                    <div className="skeleton skeleton-line" />
+                    <div className="skeleton skeleton-line short" />
+                    <div className="skeleton skeleton-line tiny" />
+                  </div>
+                </div>
               )}
               {!isFeaturedLoading && featuredPosts.length === 0 && (
                 <div className="featured-card" style={{ padding: 24 }}>Aucune actualité disponible.</div>
@@ -314,14 +321,14 @@ function Home() {
                   </div>
                   <div className="featured-content">
                     <h3 className="featured-title">{post.title}</h3>
-                    <p className="featured-description">{post.description}</p>
+                    <p className="featured-description news-card-description">{post.description}</p>
                     <div className="featured-meta">
                       <img
                         src="src/assets/clock.svg"
                         alt="Date de publication"
                         className="featured-meta-icon"
                       />
-                      <span className="featured-date">{formatNewsDate(post.date)}</span>
+                      <span className="featured-date">{formatAbsoluteDateTime(post.date)}</span>
                     </div>
                   </div>
                 </button>

@@ -1,16 +1,8 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { getNewsDemo } from '../services/newsService.js'
+import { formatAbsoluteDateTime } from '../utils/dateFormat'
 
-function formatDateFr(dateString) {
-  try {
-    const date = new Date(dateString)
-    if (Number.isNaN(date.getTime())) return dateString
-    return new Intl.DateTimeFormat('fr-FR', { day: '2-digit', month: 'long', year: 'numeric' }).format(date)
-  } catch {
-    return dateString
-  }
-}
 
 function News() {
   const [searchParams] = useSearchParams()
@@ -73,7 +65,11 @@ function News() {
           <div className="news-header-spacer" />
         </div>
 
-        {loading && <div className="news-status">Chargement...</div>}
+        {loading && (
+          <div className="news-status">
+            <div className="spinner" aria-label="Chargement" role="status" />
+          </div>
+        )}
         {error && <div className="news-error">{error}</div>}
 
         {!loading && !error && (
@@ -87,7 +83,7 @@ function News() {
                   onClick={() => setActiveId(item.id)}
                 >
                   <div className="news-mini-title">{item.shortTitle || item.title}</div>
-                  <div className="news-mini-date">{formatDateFr(item.publishedAt)}</div>
+                  <div className="news-mini-date">{formatAbsoluteDateTime(item.publishedAt)}</div>
                 </button>
               ))}
             </section>
@@ -107,7 +103,7 @@ function News() {
                   {activeItem?.subtitle && <div className="news-main-subtitle">{activeItem.subtitle}</div>}
 
                   <div className="news-main-meta">
-                    <span className="news-main-date">{formatDateFr(activeItem?.publishedAt)}</span>
+                    <span className="news-main-date">{formatAbsoluteDateTime(activeItem?.publishedAt)}</span>
                   </div>
 
                   <div className="news-main-content">
@@ -131,7 +127,7 @@ function News() {
                     onClick={() => setActiveId(item.id)}
                   >
                     <div className="news-row-title">{item.shortTitle || item.title}</div>
-                    <div className="news-row-date">{formatDateFr(item.publishedAt)}</div>
+                    <div className="news-row-date">{formatAbsoluteDateTime(item.publishedAt)}</div>
                   </button>
                 ))}
               </aside>

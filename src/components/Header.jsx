@@ -120,6 +120,12 @@ function Header() {
     searchTimeoutRef.current = setTimeout(async () => {
       try {
         const empRes = await searchEmployees(query)
+        const normalizedEmployees = (Array.isArray(empRes) ? empRes : []).map((emp) => ({
+          id: emp.id,
+          name: `${emp?.user?.first_name || ''} ${emp?.user?.last_name || ''}`.trim() || emp?.matricule || 'EmployÃ©',
+          position: emp?.position || 'Collaborateur',
+          department: emp?.department?.name || '',
+        }))
         const q = query.toLowerCase()
 
         const newsRes = newsItems.filter((n) => {
@@ -131,7 +137,7 @@ function Header() {
           (g.title || '').toLowerCase().includes(q),
         )
 
-        setEmployeeResults(empRes)
+        setEmployeeResults(normalizedEmployees)
         setNewsResults(newsRes)
         setGalleryResults(galRes)
         setShowSearchResults(true)
@@ -290,22 +296,28 @@ function Header() {
       </div>
 
       <nav className={`apps-bar ${isNavOpen ? 'apps-bar-visible' : 'apps-bar-hidden'}`}>
-        {apps.map((app) => (
-          <button
-            key={app.id}
-            type="button"
-            className="app-pill"
-            onClick={() => {
-              if (app.external) {
-                window.location.href = app.path
-                return
-              }
-              navigate(app.path)
-            }}
-          >
-            {app.label}
-          </button>
-        ))}
+        {apps.map((app) =>
+          app.external ? (
+            <a
+              key={app.id}
+              className="app-pill"
+              href={app.path}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {app.label}
+            </a>
+          ) : (
+            <button
+              key={app.id}
+              type="button"
+              className="app-pill"
+              onClick={() => navigate(app.path)}
+            >
+              {app.label}
+            </button>
+          ),
+        )}
       </nav>
 
       {showNotifications && (

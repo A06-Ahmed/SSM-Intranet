@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { getGalleryDemo } from '../services/galleryService'
+import { formatAbsoluteDateTime } from '../utils/dateFormat'
 
 function Gallery() {
   const [searchParams] = useSearchParams()
@@ -10,6 +11,7 @@ function Gallery() {
   const [query, setQuery] = useState('')
   const [active, setActive] = useState(null)
   const [activeImage, setActiveImage] = useState('')
+  const [loadedImages, setLoadedImages] = useState({})
 
   useEffect(() => {
     let isMounted = true
@@ -74,6 +76,11 @@ function Gallery() {
     setActiveImage('')
   }
 
+  function markLoaded(src) {
+    if (!src) return
+    setLoadedImages((prev) => ({ ...prev, [src]: true }))
+  }
+
   return (
     <div className="gallery-page">
       <div className="gallery-container">
@@ -116,7 +123,11 @@ function Gallery() {
 
         <section aria-label="Galerie des événements" className="gallery-grid-section">
           <div className="gallery-grid">
-            {isLoading && <div className="gallery-status">Chargement de la galerie...</div>}
+            {isLoading && (
+              <div className="gallery-status">
+                <div className="spinner" aria-label="Chargement" role="status" />
+              </div>
+            )}
             {!isLoading && error && <div className="gallery-error">{error}</div>}
 
             {!isLoading &&
@@ -131,17 +142,29 @@ function Gallery() {
                     className="gallery-card"
                     onClick={() => openItem(item)}
                   >
-                    <div
-                      className="gallery-card-cover"
-                      style={{
-                        backgroundImage: item.coverImage
-                          ? `linear-gradient(120deg, rgba(0, 32, 92, 0.65), rgba(37, 99, 235, 0.35)), url(${item.coverImage})`
-                          : undefined,
-                      }}
-                      aria-hidden="true"
-                    />
+                    <div className="gallery-card-cover" aria-hidden="true">
+                      <div
+                        className={`gallery-img-container ${
+                          loadedImages[item.coverImage] ? 'is-loaded' : 'is-loading'
+                        }`}
+                      >
+                        {item.coverImage ? (
+                          <img
+                            src={item.coverImage}
+                            alt=""
+                            className="gallery-card-img"
+                            onLoad={() => markLoaded(item.coverImage)}
+                            onError={() => markLoaded(item.coverImage)}
+                            loading="lazy"
+                          />
+                        ) : (
+                          <div className="gallery-img-placeholder" />
+                        )}
+                      </div>
+                      <div className="gallery-card-overlay" />
+                    </div>
                     <div className="gallery-card-body">
-                      <div className="gallery-card-date">{item.date}</div>
+                      <div className="gallery-card-date">{formatAbsoluteDateTime(item.date)}</div>
                       <h2 className="gallery-card-title">{item.title}</h2>
                     </div>
                   </button>
@@ -157,7 +180,7 @@ function Gallery() {
           <div className="gallery-modal-card">
             <div className="gallery-modal-header">
               <div className="gallery-modal-meta">
-                <div className="gallery-modal-date">{active.date}</div>
+                <div className="gallery-modal-date">{formatAbsoluteDateTime(active.date)}</div>
                 <div className="gallery-modal-title">{active.title}</div>
               </div>
               <button type="button" className="gallery-modal-close" onClick={closeModal}>
@@ -167,16 +190,24 @@ function Gallery() {
 
             <div className="gallery-modal-body">
               <div className="gallery-modal-main">
-                {activeImage ? (
-                  <img
-                    src={activeImage}
-                    alt={active.title}
-                    className="gallery-modal-main-image"
-                    loading="lazy"
-                  />
-                ) : (
-                  <div className="gallery-modal-main-placeholder" />
-                )}
+                <div
+                  className={`gallery-img-container ${
+                    loadedImages[activeImage] ? 'is-loaded' : 'is-loading'
+                  }`}
+                >
+                  {activeImage ? (
+                    <img
+                      src={activeImage}
+                      alt={active.title}
+                      className="gallery-modal-main-image"
+                      onLoad={() => markLoaded(activeImage)}
+                      onError={() => markLoaded(activeImage)}
+                      loading="lazy"
+                    />
+                  ) : (
+                    <div className="gallery-modal-main-placeholder" />
+                  )}
+                </div>
               </div>
               {activeImages.length > 0 && (
                 <div className="gallery-modal-thumbs" aria-label="Miniatures">

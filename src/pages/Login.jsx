@@ -16,7 +16,9 @@ function Login() {
   const [showPassword, setShowPassword] = useState(false)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [errorMsg, setErrorMsg] = useState(location.state?.error || '')
+  const routeError = location.state?.error || ''
+  const isRedirectedFromProtected = Boolean(location.state?.from)
+  const [errorMsg, setErrorMsg] = useState(isRedirectedFromProtected ? '' : routeError)
 
   const googleLogin = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
@@ -58,26 +60,22 @@ function Login() {
           <h2 className='login-headline'>Log in</h2>
           <h6 className='login-caption'>Connectez-vous via e-mail ou un autre service pour continuer </h6>
           {errorMsg && <div className="login-error-msg">{errorMsg}</div>}
-          {!errorMsg && (
-            <>
-              <button
-                type="button"
-                className="my-google-btn"
-                onClick={() => googleLogin()}
-              >
-                <img src={gLogo} alt="Google logo" className='glogo' />
-                <p className='auth text'>Continue with Google</p>
-              </button>
-              <a href="http://localhost:5000/auth/google" class="btn-google">
-                  Login with Google
-              </a>
-              <div className='or'>
-                <div className='orfill'></div>
-                <p>OU</p>
-                <div className='orfill2'></div>
-              </div>
-            </>
-          )}
+          <button
+            type="button"
+            className="my-google-btn"
+            onClick={() => googleLogin()}
+          >
+            <img src={gLogo} alt="Google logo" className='glogo' />
+            <p className='auth text'>Continue with Google</p>
+          </button>
+          <a href="http://localhost:5000/auth/google" className="btn-google">
+              Login with Google
+          </a>
+          <div className='or'>
+            <div className='orfill'></div>
+            <p>OU</p>
+            <div className='orfill2'></div>
+          </div>
           <div className='login-manparent-form'>
             <div className='login-man-form'>
               <form onSubmit={handleStandardLogin} className="login-actual-form">
@@ -129,4 +127,3 @@ function Login() {
 }
 
 export default Login
-

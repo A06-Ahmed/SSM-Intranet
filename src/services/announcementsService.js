@@ -1,13 +1,16 @@
 import { apiFetch } from './api.js'
 
 function toAnnouncement(item) {
+  const priority = (item.priority_status || item.priority || 'Moyenne').toString()
+  const isHigh = priority.toLowerCase().startsWith('h')
+
   return {
     id: item.id,
     title: item.title,
     description: item.content,
     date: item.published_at || item.created_at,
-    severity: 'medium',
-    severityLabel: 'Moyenne',
+    severity: isHigh ? 'high' : 'medium',
+    severityLabel: isHigh ? 'Haute' : 'Moyenne',
   }
 }
 

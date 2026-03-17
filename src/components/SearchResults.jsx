@@ -38,7 +38,7 @@ function SearchResults({
             >
               <div className="search-results-avatar" aria-hidden="true">
                 <span>
-                  {emp.name
+                  {(emp.name || 'EM')
                     .split(' ')
                     .filter(Boolean)
                     .map((p) => p[0])
@@ -48,9 +48,9 @@ function SearchResults({
                 </span>
               </div>
               <div className="search-results-info">
-                <div className="search-results-name">{emp.name}</div>
+                <div className="search-results-name">{emp.name || 'EmployÃ©'}</div>
                 <div className="search-results-meta">
-                  <span className="search-results-position">{emp.position}</span>
+                  <span className="search-results-position">{emp.position || 'Collaborateur'}</span>
                   {emp.department && (
                     <>
                       <span className="search-results-dot">•</span>
@@ -108,4 +108,3 @@ function SearchResults({
 }
 
 export default SearchResults
-

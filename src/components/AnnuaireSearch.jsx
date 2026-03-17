@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { apiFetch } from '../services/api.js'
+import fallbackEmployees from '../data/employees.json'
 
 // Build unique, sorted list of values for a given key
 function buildUniqueList(data, key) {
@@ -130,7 +131,7 @@ export default function AnnuaireSearch({ initialSelectedId }) {
       try {
         setLoading(true)
         setError(null)
-        const response = await apiFetch('/employees')
+        const response = await apiFetch('/public/employees')
         const items = response?.data?.items || response?.data || []
         const normalized = items.map((row) => ({
           id: row.id,
@@ -150,8 +151,27 @@ export default function AnnuaireSearch({ initialSelectedId }) {
       } catch (err) {
         console.error(err)
         if (isMounted) {
-          setError('Erreur lors du chargement des contacts.')
-          setContacts([])
+          const fallback = Array.isArray(fallbackEmployees) ? fallbackEmployees : []
+          if (fallback.length > 0) {
+            setContacts(
+              fallback.map((row) => ({
+                id: row.id,
+                name: row.name || '',
+                affectation: row.position ?? '',
+                email: row.email ?? '',
+                phone: row.phone ?? '',
+                department: row.department ?? '',
+                matricule: row.matricule ?? '',
+                code: '',
+                extension: '',
+                type: 'interne',
+              }))
+            )
+            setError(null)
+          } else {
+            setError('Erreur lors du chargement des contacts.')
+            setContacts([])
+          }
         }
       } finally {
         if (isMounted) setLoading(false)
