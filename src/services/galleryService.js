@@ -2,21 +2,12 @@ import { apiFetch } from './api.js'
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || ''
 
-function getBaseOrigin() {
-  if (!API_BASE_URL) return ''
-  try {
-    return new URL(API_BASE_URL).origin
-  } catch {
-    return ''
-  }
-}
-
 function toAbsoluteUrl(path) {
   if (!path) return ''
   if (path.startsWith('http://') || path.startsWith('https://')) return path
-  const origin = getBaseOrigin()
+  const base = API_BASE_URL.replace(/\/+$/, '')
   const cleanPath = path.replace(/^\/+/, '')
-  return origin ? `${origin}/${cleanPath}` : `/${cleanPath}`
+  return base ? `${base}/${cleanPath}` : `/${cleanPath}`
 }
 
 function toGalleryItem(item) {

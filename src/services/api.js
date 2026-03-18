@@ -3,7 +3,8 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || ''
 function buildUrl(path) {
   if (!path) return API_BASE_URL || '/'
   if (path.startsWith('http://') || path.startsWith('https://')) return path
-  const base = API_BASE_URL.replace(/\/+$/, '')
+  const baseRoot = API_BASE_URL.replace(/\/+$/, '')
+  const base = baseRoot.endsWith('/api') ? baseRoot : `${baseRoot}/api`
   const cleanPath = path.replace(/^\/+/, '')
   return `${base}/${cleanPath}`
 }
