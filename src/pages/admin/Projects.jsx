@@ -1,10 +1,17 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { createProject, deleteProject, getProjects } from '../../services/adminService.js'
+import { useAuth } from '../../hooks/useAuth'
+import { hasPermission } from '../../utils/permissions.js'
 
 function ProjectsAdmin() {
   const [items, setItems] = useState([])
   const [form, setForm] = useState({ name: '', description: '' })
   const [error, setError] = useState(null)
+  const { roleNames } = useAuth()
+
+  const canCreate = useMemo(() => hasPermission(roleNames, 'projects', 'create'), [roleNames])
+  const canRead = useMemo(() => hasPermission(roleNames, 'projects', 'read'), [roleNames])
+  const canDelete = useMemo(() => hasPermission(roleNames, 'projects', 'delete'), [roleNames])
 
   async function load() {
     try {
@@ -31,7 +38,7 @@ function ProjectsAdmin() {
       setForm({ name: '', description: '' })
       load()
     } catch (e) {
-      setError(e?.message || 'Erreur de crÃ©ation projet')
+      setError(e?.message || 'Erreur de creation projet')
     }
   }
 
@@ -46,32 +53,46 @@ function ProjectsAdmin() {
       <h1>Projets</h1>
       {error && <div className="admin-error">{error}</div>}
 
-      <form className="admin-form" onSubmit={onSubmit}>
-        <input name="name" placeholder="Nom" value={form.name} onChange={onChange} />
-        <input name="description" placeholder="Description" value={form.description} onChange={onChange} />
-        <button type="submit">CrÃ©er</button>
-      </form>
+      {canCreate ? (
+        <form className="admin-form" onSubmit={onSubmit}>
+          <input name="name" placeholder="Nom" value={form.name} onChange={onChange} />
+          <input name="description" placeholder="Description" value={form.description} onChange={onChange} />
+          <button type="submit">Creer</button>
+        </form>
+      ) : (
+        <div className="admin-restricted">Acces restreint.</div>
+      )}
 
-      <table className="admin-table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Nom</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {items.map((project) => (
-            <tr key={project.id}>
-              <td>{project.id}</td>
-              <td>{project.name}</td>
-              <td>
-                <button type="button" onClick={() => onDelete(project.id)}>Supprimer</button>
-              </td>
+      {!canRead ? (
+        <div className="admin-restricted">Acces restreint.</div>
+      ) : (
+        <table className="admin-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nom</th>
+              <th>Description</th>
+              <th>Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {items.map((project) => (
+              <tr key={project.id}>
+                <td>{project.id}</td>
+                <td>{project.name}</td>
+                <td>{project.description}</td>
+                <td>
+                  {canDelete ? (
+                    <button type="button" onClick={() => onDelete(project.id)}>Supprimer</button>
+                  ) : (
+                    <span className="admin-restricted">Acces restreint</span>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
     </div>
   )
 }

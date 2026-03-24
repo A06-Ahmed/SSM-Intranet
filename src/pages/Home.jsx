@@ -11,6 +11,7 @@ function Home() {
 
   const [announcements, setAnnouncements] = useState([])
   const [isAnnouncementsLoading, setIsAnnouncementsLoading] = useState(true)
+  const [showAllAnnouncements, setShowAllAnnouncements] = useState(false)
 
   const [featuredPosts, setFeaturedPosts] = useState([])
   const [isFeaturedLoading, setIsFeaturedLoading] = useState(true)
@@ -202,6 +203,18 @@ function Home() {
     return map[name] || name
   }
 
+  const sortedAnnouncements = [...announcements].sort((a, b) => {
+    const aTime = a?.date ? new Date(a.date).getTime() : 0
+    const bTime = b?.date ? new Date(b.date).getTime() : 0
+    return bTime - aTime
+  })
+
+  const visibleAnnouncements = showAllAnnouncements
+    ? [...sortedAnnouncements].reverse()
+    : sortedAnnouncements.slice(0, 3)
+
+  const canShowMore = sortedAnnouncements.length > 3
+
   return (
     <div className="home">
       <div className="home-wlcm">
@@ -232,7 +245,7 @@ function Home() {
                 </div>
               </li>
             )}
-            {!isAnnouncementsLoading && announcements.map((item) => (
+            {!isAnnouncementsLoading && visibleAnnouncements.map((item) => (
               <li key={item.id} className="announcement-row">
                 <div className="announcement-left">
                   <div
@@ -259,6 +272,17 @@ function Home() {
               </li>
             ))}
           </ul>
+          {!isAnnouncementsLoading && canShowMore && (
+            <div className="announcements-more">
+              <button
+                type="button"
+                className="announcements-more-btn"
+                onClick={() => setShowAllAnnouncements((prev) => !prev)}
+              >
+                {showAllAnnouncements ? 'Voir moins' : 'Voir plus'}
+              </button>
+            </div>
+          )}
         </div>
       </section>
       <section className="home-annuaire-section">
@@ -295,7 +319,7 @@ function Home() {
                 </div>
               )}
               {!isFeaturedLoading && featuredPosts.length === 0 && (
-                <div className="featured-card" style={{ padding: 24 }}>Aucune actualité disponible.</div>
+                <div className="featured-card" style={{ padding: 24 }}>Aucune actualitï¿½ disponible.</div>
               )}
               {!isFeaturedLoading && featuredPosts.map((post) => (
                 <button

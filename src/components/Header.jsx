@@ -9,7 +9,7 @@ import { getNotifications } from '../services/notificationService'
 
 function Header() {
   const navigate = useNavigate()
-  const { user, logout } = useAuth()
+  const { user, logout, token } = useAuth()
   const [searchValue, setSearchValue] = useState('')
   const [employeeResults, setEmployeeResults] = useState([])
   const [newsResults, setNewsResults] = useState([])
@@ -23,6 +23,7 @@ function Header() {
   const roles = Array.isArray(user?.roles) ? user.roles.map((r) => r.name) : []
   const isAdmin = roles.includes('Admin') || roles.includes('SuperAdmin') || roles.includes('HR') || roles.includes('Manager')
   const adminUrl = import.meta.env.VITE_LARAVEL_ADMIN_URL || 'http://localhost:8000/admin'
+  const adminLink = token ? `${adminUrl}/login-with-token?token=${encodeURIComponent(token)}` : adminUrl
 
   const displayName = user ? `${user.first_name} ${user.last_name}` : 'Utilisateur invité'
   const displayPosition = isAdmin ? 'Administrateur' : 'Collaborateur'
@@ -39,7 +40,7 @@ function Header() {
     { id: 'kelio', label: 'Kelio', path: '/demo/kelio' },
     { id: 'reporting', label: 'Reporting', path: '/demo/reporting' },
     { id: 'suivi', label: 'Suivi Armature', path: '/demo/suivi-armature' },
-    ...(isAdmin ? [{ id: 'admin-dashboard', label: 'Admin', path: adminUrl, external: true }] : []),
+    ...(isAdmin ? [{ id: 'admin-dashboard', label: 'Admin', path: adminLink, external: true }] : []),
   ]
 
     const [notifications, setNotifications] = useState([])

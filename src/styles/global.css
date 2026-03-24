@@ -3582,6 +3582,99 @@ body {
   cursor: pointer;
 }
 
+/* --- Admin layout (RBAC) --- */
+.admin-shell {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  min-height: 100vh;
+  background: #f8fafc;
+}
+
+.admin-sidebar {
+  background: #ffffff;
+  border-right: 1px solid #e5e7eb;
+  padding: 18px 14px;
+}
+
+.admin-sidebar-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.admin-sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.admin-sidebar-link {
+  text-decoration: none;
+  color: #334155;
+  padding: 8px 10px;
+  border-radius: 8px;
+  font-size: 13px;
+}
+
+.admin-sidebar-link.is-active,
+.admin-sidebar-link:hover {
+  background: #e0edff;
+  color: #0b66d0;
+}
+
+.admin-content {
+  padding: 20px;
+}
+
+.admin-footer {
+  margin-top: 24px;
+  text-align: center;
+  font-size: 11px;
+  color: rgba(15, 23, 42, 0.5);
+}
+
+
+.announcements-more {
+  display: flex;
+  justify-content: center;
+  margin-top: 12px;
+}
+
+.announcements-more-btn {
+  border: 1px solid #0f3c88;
+  background: #ffffff;
+  color: #0f3c88;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.announcements-more-btn:hover {
+  background: #eff6ff;
+}
+
+@media (max-width: 900px) {
+  .admin-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-sidebar {
+    border-right: none;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .admin-sidebar-title {
+    width: 100%;
+  }
+}
+
 .top-header,
 .header-bar {
   overflow: visible;
@@ -3896,5 +3989,81 @@ body {
 
   .home-gallery-card {
     height: 180px !important;
+  }
+}
+
+/* --- Responsive-only adjustments (no UI/UX changes) --- */
+@media (max-width: 900px) {
+  .header-bar {
+    padding: 8px 14px;
+  }
+
+  .header-right {
+    gap: 10px;
+  }
+
+  .profile-info {
+    align-items: center;
+    text-align: center;
+  }
+
+  .apps-bar {
+    padding: 8px 12px 12px 12px;
+    gap: 12px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .app-pill {
+    font-size: 16px;
+    padding: 6px 16px;
+    white-space: nowrap;
+  }
+
+  .site-footer {
+    padding: 24px 16px 12px 16px;
+  }
+
+  .footer-main {
+    flex-direction: column;
+    gap: 14px;
+  }
+}
+
+@media (max-width: 640px) {
+  .header-logo img {
+    height: 34px;
+  }
+
+  .search-content {
+    padding: 8px 12px;
+  }
+
+  .search-input {
+    font-size: 12px;
+  }
+
+  .apps-bar {
+    padding: 6px 10px 10px 10px;
+  }
+
+  .app-pill {
+    font-size: 15px;
+  }
+
+  .home-annuaire-section {
+    display: block;
+  }
+
+  .announcements-card,
+  .featured-viewport,
+  .home-bottom-section,
+  .calendar-card,
+  .home-gallery-card {
+    width: 100%;
+  }
+
+  .news-top-grid {
+    grid-template-columns: 1fr;
   }
 }

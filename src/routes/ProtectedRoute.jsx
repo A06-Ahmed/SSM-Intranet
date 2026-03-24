@@ -16,7 +16,7 @@ function ProtectedRoute({ children, allowedRoles }) {
         replace
         state={{
           from: location,
-          error: "Vous devez être connecté pour accéder à cette page.",
+          error: "Vous devez etre connecte pour acceder a cette page.",
         }}
       />
     )

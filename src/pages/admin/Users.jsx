@@ -1,5 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { createUser, deleteUser, getRoles, getUsers } from '../../services/adminService.js'
+import { useAuth } from '../../hooks/useAuth'
+import { hasPermission } from '../../utils/permissions.js'
 
 function UsersAdmin() {
   const [items, setItems] = useState([])
@@ -13,6 +15,11 @@ function UsersAdmin() {
     role_id: '',
   })
   const [error, setError] = useState(null)
+  const { roleNames } = useAuth()
+
+  const canCreate = useMemo(() => hasPermission(roleNames, 'users', 'create'), [roleNames])
+  const canRead = useMemo(() => hasPermission(roleNames, 'users', 'read'), [roleNames])
+  const canDelete = useMemo(() => hasPermission(roleNames, 'users', 'delete'), [roleNames])
 
   async function load() {
     setLoading(true)
@@ -43,7 +50,7 @@ function UsersAdmin() {
       setForm({ first_name: '', last_name: '', email: '', password: '', role_id: '' })
       load()
     } catch (e) {
-      setError(e?.message || 'Erreur de crÃ©ation utilisateur')
+      setError(e?.message || 'Erreur de creation utilisateur')
     }
   }
 
@@ -59,23 +66,29 @@ function UsersAdmin() {
 
       {error && <div className="admin-error">{error}</div>}
 
-      <form className="admin-form" onSubmit={onSubmit}>
-        <input name="first_name" placeholder="PrÃ©nom" value={form.first_name} onChange={onChange} />
-        <input name="last_name" placeholder="Nom" value={form.last_name} onChange={onChange} />
-        <input name="email" placeholder="Email" value={form.email} onChange={onChange} />
-        <input name="password" placeholder="Mot de passe" type="password" value={form.password} onChange={onChange} />
-        <select name="role_id" value={form.role_id} onChange={onChange}>
-          <option value="">SÃ©lectionner un rÃ´le</option>
-          {roles.map((role) => (
-            <option key={role.id} value={role.id}>
-              {role.name}
-            </option>
-          ))}
-        </select>
-        <button type="submit">CrÃ©er</button>
-      </form>
+      {canCreate ? (
+        <form className="admin-form" onSubmit={onSubmit}>
+          <input name="first_name" placeholder="Prenom" value={form.first_name} onChange={onChange} />
+          <input name="last_name" placeholder="Nom" value={form.last_name} onChange={onChange} />
+          <input name="email" placeholder="Email" value={form.email} onChange={onChange} />
+          <input name="password" placeholder="Mot de passe" type="password" value={form.password} onChange={onChange} />
+          <select name="role_id" value={form.role_id} onChange={onChange}>
+            <option value="">Selectionner un role</option>
+            {roles.map((role) => (
+              <option key={role.id} value={role.id}>
+                {role.name}
+              </option>
+            ))}
+          </select>
+          <button type="submit">Creer</button>
+        </form>
+      ) : (
+        <div className="admin-restricted">Acces restreint.</div>
+      )}
 
-      {loading ? (
+      {!canRead ? (
+        <div className="admin-restricted">Acces restreint.</div>
+      ) : loading ? (
         <div>Chargement...</div>
       ) : (
         <table className="admin-table">
@@ -84,7 +97,7 @@ function UsersAdmin() {
               <th>ID</th>
               <th>Nom</th>
               <th>Email</th>
-              <th>RÃ´les</th>
+              <th>Roles</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -96,7 +109,11 @@ function UsersAdmin() {
                 <td>{user.email}</td>
                 <td>{(user.roles || []).map((r) => r.name).join(', ')}</td>
                 <td>
-                  <button type="button" onClick={() => onDelete(user.id)}>Supprimer</button>
+                  {canDelete ? (
+                    <button type="button" onClick={() => onDelete(user.id)}>Supprimer</button>
+                  ) : (
+                    <span className="admin-restricted">Acces restreint</span>
+                  )}
                 </td>
               </tr>
             ))}

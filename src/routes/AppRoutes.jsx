@@ -8,7 +8,7 @@ const HomePage = lazy(() => import('../pages/Home.jsx'))
 const NewsPage = lazy(() => import('../pages/News.jsx'))
 const GalleryPage = lazy(() => import('../pages/Gallery.jsx'))
 const UserJsonPage = lazy(() => import('../pages/UserJson.jsx'))
-const AjirhDemoPage = lazy(() => import('../pages/AjirhDemo.jsx'))
+const AjirhDemoPage = lazy(() => import('../pages/AgirhDemo.jsx'))
 const KelioDemoPage = lazy(() => import('../pages/KelioDemo.jsx'))
 const ReportingDemoPage = lazy(() => import('../pages/ReportingDemo.jsx'))
 const SuiviArmatureDemoPage = lazy(() => import('../pages/SuiviArmatureDemo.jsx'))
@@ -162,15 +162,15 @@ function AppRoutes() {
               </ProtectedRoute>
             }
           />
-          <Route
-            path="/assistance"
-            element={
-              <ProtectedRoute>
-                <AssistancePage />
-              </ProtectedRoute>
-            }
-          />
-        </Route>
+        <Route
+          path="/assistance"
+          element={
+            <ProtectedRoute>
+              <AssistancePage />
+            </ProtectedRoute>
+          }
+        />
+      </Route>
 
         {/* Default / catch-all */}
         <Route path="/" element={<Navigate to="/home" replace />} />
